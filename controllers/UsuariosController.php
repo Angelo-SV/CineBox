@@ -1,0 +1,197 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+require_once __DIR__ . '/../config/Database.php';
+require_once __DIR__ . '/../models/Usuario.php';
+require_once __DIR__ . '/../middleware/admin.php';
+
+$uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+
+/* ===============================
+   LISTADO
+   =============================== */
+   if ($uri === 'Videoteca_ElResplandor/usuarios') {
+    requireAdmin();
+    // seguridad mínima
+    if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
+        header("Location: /Videoteca_ElResplandor/");
+        exit;
+    }
+
+    $usuarios = Usuario::listar(); // 👈 viene del modelo
+    require __DIR__ . '/../views/admin/usuarios.php';
+    exit;
+}
+
+/* ===============================
+   INSERTAR USUARIO
+   =============================== */
+   if ($uri === 'Videoteca_ElResplandor/usuarios/crear') {
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        header("Location: /Videoteca_ElResplandor/");
+        exit;
+    }
+
+    $origen = $_POST['origen'] ?? 'admin';
+
+    if ($origen === 'admin') {
+        requireAdmin();
+    }
+
+    try {
+        $nombre          = trim($_POST['nombre'] ?? '');
+        $apellidoPaterno = trim($_POST['apellidoPaterno'] ?? '');
+        $apellidoMaterno = trim($_POST['apellidoMaterno'] ?? '');
+        $correo          = trim($_POST['correo'] ?? '');
+        $telefono        = trim($_POST['telefono'] ?? '');
+        $password        = $_POST['password'] ?? '';
+        $confirmar       = $_POST['confirmarContrasena'] ?? '';
+
+        validarDatosUsuario([
+            'nombre'           => $nombre,
+            'apellidoPaterno'  => $apellidoPaterno,
+            'apellidoMaterno'  => $apellidoMaterno,
+            'correo'           => $correo,
+            'telefono'         => $telefono,
+            'password'         => $password,
+            'confirmar'        => $confirmar
+        ], $origen);
+
+        $data = [
+            'nombre'          => $nombre,
+            'apellidoPaterno' => $apellidoPaterno,
+            'apellidoMaterno' => $apellidoMaterno,
+            'correo'          => $correo,
+            'telefono'        => $telefono,
+            'rol'             => ($origen === 'admin' && isset($_POST['admin'])) ? 1 : 2,
+            'password'        => password_hash($password, PASSWORD_DEFAULT)
+        ];
+
+        Usuario::insertar($data);
+
+        /* 🔀 Redirect OK */
+        if ($origen === 'registro') {
+            header("Location: /Videoteca_ElResplandor/login?msg=registro_ok");
+        } else {
+            header("Location: /Videoteca_ElResplandor/usuarios?msg=insertado");
+        }
+        exit;
+
+    } catch (Exception $e) {
+
+        /* 🔀 Redirect ERROR */
+        if ($origen === 'registro') {
+            $msg = $e->getMessage();
+            header("Location: /Videoteca_ElResplandor/registro?msg={$msg}");
+        } else {
+            header("Location: /Videoteca_ElResplandor/usuarios?msg=error_campos");
+        }
+        exit;
+    }
+}
+
+/* ===============================
+   ACTUALIZAR
+   =============================== */
+if ($uri === 'Videoteca_ElResplandor/usuarios/actualizar') {
+    requireAdmin();
+    try {
+        $id = intval($_POST['id'] ?? 0);
+
+        if ($id === $_SESSION['id'] && !isset($_POST['admin'])) {
+            header("Location: /Videoteca_ElResplandor/usuarios?msg=error_rol");
+            exit;
+        }
+
+        $password = $_POST['password'] !== ''
+            ? password_hash($_POST['password'], PASSWORD_DEFAULT)
+            : $_POST['password_actual'];
+
+        validarDatosUsuario([
+            'nombre'           => $_POST['nombre'] ?? '',
+            'apellidoPaterno'  => $_POST['apellidoPaterno'] ?? '',
+            'apellidoMaterno'  => $_POST['apellidoMaterno'] ?? '',
+            'correo'           => $_POST['correo'] ?? '',
+            'telefono'         => $_POST['telefono'] ?? '',
+            'password'         => $_POST['password'] ?? ''
+        ], 'admin', true);
+        
+        Usuario::actualizar([
+            'id'               => $id,
+            'nombre'           => trim($_POST['nombre']),
+            'apellidoPaterno'  => trim($_POST['apellidoPaterno']),
+            'apellidoMaterno'  => trim($_POST['apellidoMaterno']),
+            'correo'           => trim($_POST['correo']),
+            'telefono'         => trim($_POST['telefono']),
+            'rol'              => isset($_POST['admin']) ? 1 : 2,
+            'password'         => $password
+        ]);
+
+        header("Location: /Videoteca_ElResplandor/usuarios?msg=actualizado");
+        exit;
+
+    } catch (Exception $e) {
+        error_log($e->getMessage());
+        header("Location: /Videoteca_ElResplandor/usuarios?msg=error_bd");
+        exit;
+    }
+}
+
+/* ===============================
+   ELIMINAR
+   =============================== */
+if ($uri === 'Videoteca_ElResplandor/usuarios/eliminar') {
+    requireAdmin();
+    $id = intval($_POST['id'] ?? 0);
+
+    if ($id === $_SESSION['id']) {
+        header("Location: /Videoteca_ElResplandor/usuarios?msg=error_autodelete");
+        exit;
+    }
+
+    try {
+        Usuario::eliminar($id);
+        header("Location: /Videoteca_ElResplandor/usuarios?msg=eliminado");
+        exit;
+    } catch (Exception $e) {
+        error_log($e->getMessage());
+        header("Location: /Videoteca_ElResplandor/usuarios?msg=error_bd");
+        exit;
+    }
+}
+
+function validarDatosUsuario(array $data, string $origen = 'admin', bool $esUpdate = false): void
+{
+    if (
+        trim($data['nombre']) === '' ||
+        trim($data['apellidoPaterno']) === '' ||
+        trim($data['apellidoMaterno']) === '' ||
+        trim($data['correo']) === '' ||
+        trim($data['telefono']) === ''
+    ) {
+        throw new Exception('error_campos');
+    }
+
+    if (!filter_var($data['correo'], FILTER_VALIDATE_EMAIL)) {
+        throw new Exception('error_correo');
+    }
+
+    if (!preg_match('/^[0-9]{8,15}$/', $data['telefono'])) {
+        throw new Exception('error_telefono');
+    }
+
+    // Validaciones solo si NO es update o si se cambia password
+    if (!$esUpdate || $data['password'] !== '') {
+
+        if (strlen($data['password']) < 8) {
+            throw new Exception('error_password');
+        }
+
+        if ($origen === 'registro' && $data['password'] !== ($data['confirmar'] ?? '')) {
+            throw new Exception('error_password');
+        }
+    }
+}

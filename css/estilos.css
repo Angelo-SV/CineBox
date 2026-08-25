@@ -1,0 +1,26 @@
+/* GLOBAL STYLES
+-------------------------------------------------- */
+.main-container {
+    background-color: #141619;
+    padding-top: 0em;
+    padding-bottom: 0em;
+  }
+
+.header{
+    width: 100% !important;
+    height: 75px !important;
+}
+
+.objheader{
+    height: 72px;
+}
+
+.movies-container{
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+
+.footer{
+    width: 100% !important;
+    height: 110px;
+}

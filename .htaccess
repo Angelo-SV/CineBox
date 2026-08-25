@@ -1,0 +1,16 @@
+# Bloquear acceso directo a archivos ocultos (.env, .git, etc.)
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+RewriteEngine On
+
+# Base del proyecto
+RewriteBase /Videoteca_ElResplandor/
+
+# No reescribir archivos reales
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Todo va a index.php
+RewriteRule ^ index.php [L]
