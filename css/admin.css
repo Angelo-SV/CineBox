@@ -1,40 +1,51 @@
-/* tabs-one */
-.tabs-one {
-    border: 1px solid var(--gray-4);
-  }
-  .tabs-one .nav {
-    border-bottom: 1px solid var(--gray-4);
-  }
-  @media (max-width: 767px) {
-    .tabs-one .nav {
-      display: block;
-    }
-  }
-  @media only screen and (min-width: 576px) and (max-width: 767px) {
-    .tabs-one .nav {
-      display: flex;
-    }
-  }
-  .tabs-one .nav .nav-item a {
-    font-size: 16px;
-    line-height: 24px;
-    color: var(--dark-3);
-    font-weight: 700;
-    padding: 13px;
-    -webkit-transition: all 0.3s ease-out 0s;
-    -moz-transition: all 0.3s ease-out 0s;
-    -ms-transition: all 0.3s ease-out 0s;
-    -o-transition: all 0.3s ease-out 0s;
-    transition: all 0.3s ease-out 0s;
-    display: block;
-  }
-  .tabs-one .nav .nav-item a.active {
-    color: var(--white);
-    background: var(--primary);
-  }
-  .tabs-one .tab-content .tab-text {
-    padding: 15px;
-  }
-  .tabs-one .tab-content .tab-text .text {
-    color: var(--dark-3);
-  }
+/* Estilos del layout de administración (views/layouts/layout_admin.php) */
+body {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+main {
+  flex: 1;
+  background-color: #3c3e40;
+  color: #f8f9fa;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.btn-warning:hover {
+  background-color: #e0a800;
+}
+.sidebar {
+  width: 260px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #212529;
+  color: white;
+  padding-top: 90px;
+  border-right: 1px solid #ffc107;
+}
+.sidebar a {
+  padding: 12px 20px;
+  display: block;
+  color: #ddd;
+  text-decoration: none;
+}
+.sidebar a:hover {
+  background-color: #343a40;
+  color: #fff;
+}
+.main-content {
+  margin-left: 260px;
+  padding: 90px 40px 40px 40px;
+}
+.col-id {
+  display: none;
+}
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}

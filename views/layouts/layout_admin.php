@@ -16,58 +16,7 @@ $contenido = $contenido ?? '<p>Bienvenido a CineBox</p>';
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <!-- DataTables Responsive CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
-    <style>
-      body {
-        background-color: #121212;
-        color: #e0e0e0;
-      }
-      main {
-        flex: 1;
-        background-color: #3c3e40;
-        color: #f8f9fa;
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-      }
-      .btn-warning:hover {
-        background-color: #e0a800;
-      }
-      .sidebar {
-        width: 260px;
-        height: 100vh;
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: #212529;
-        color: white;
-        padding-top: 90px;
-        border-right: 1px solid #ffc107;
-    }
-      .sidebar a {
-          padding: 12px 20px;
-          display: block;
-          color: #ddd;
-          text-decoration: none;
-      }
-      .sidebar a:hover {
-          background-color: #343a40;
-          color: #fff;
-      }
-      .main-content {
-          margin-left: 260px;
-          padding: 90px 40px 40px 40px;
-      }
-      .col-id {
-            display: none;
-        }
-        html, body {
-        height: 100%;
-        }
-
-        body {
-        display: flex;
-        flex-direction: column;
-        }
-    </style>
+    <link rel="stylesheet" href="<?= BASE_PATH ?>/css/admin.css">
 </head>
 <body>
     <!-- NAVBAR SUPERIOR -->

@@ -22,75 +22,7 @@ if (count($partes) >= 2) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <style>
-        main {
-            background-color: #3c3e40;
-            color: #f8f9fa;
-            padding-top: 2rem;
-            padding-bottom: 2rem;
-            flex: 1;
-        }
-        .navbar {
-            height: 70px;
-        }
-
-        .sidebar {
-            width: 260px;
-            height: 100vh;
-            position: fixed;
-            top: 70px;
-            left: 0;
-            background-color: #1c1f23;
-            padding-top: 30px;
-            border-right: 1px solid #ffc107;
-        }
-        .sidebar a {
-            padding: 12px 25px;
-            display: block;
-            color: #bbb;
-            text-decoration: none;
-            transition: 0.2s;
-        }
-        .sidebar a:hover {
-            background-color: #ffc107;
-            color: #000;
-        }
-        .sidebar a.active {
-            background-color: #ffc107;
-            color: #000;
-            font-weight: bold;
-        }
-        .main-content {
-            margin-left: 260px;
-            padding: 100px 40px 40px 40px;
-        }
-        .avatar-circle {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            background-color: #ffc107;
-            color: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            font-weight: bold;
-            margin: 0 auto 15px auto;
-        }
-        @media (max-width: 768px) {
-            .sidebar {
-                position: relative;
-                width: 100%;
-                height: auto;
-                border-right: none;
-                border-bottom: 1px solid #ffc107;
-            }
-            .main-content {
-                margin-left: 0;
-                padding-top: 30px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="<?= BASE_PATH ?>/css/perfil.css">
 </head>
 <body class="d-flex flex-column min-vh-100">
 <!-- NAVBAR -->
