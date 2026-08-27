@@ -285,6 +285,8 @@ ob_start();
 </div>
 <!-- JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/alquiler-modal.js"></script>
 <script src="js/peliculas-public.js"></script>
 <script>
 window.usuarioLogueado = <?= isset($_SESSION['id']) ? 'true' : 'false' ?>;

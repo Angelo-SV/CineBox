@@ -411,6 +411,8 @@ if (!empty($_SESSION['id'])) {
   </div>
 </div>
 <!-- ================= JS REVIEW ================= -->
+<script src="js/shared.js"></script>
+<script src="js/alquiler-modal.js"></script>
 <script src="js/reviews.js"></script>
 <?php
 $contenido = ob_get_clean();

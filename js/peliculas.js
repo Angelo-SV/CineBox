@@ -241,9 +241,7 @@ document.addEventListener("DOMContentLoaded", () => {
    MODAL ELIMINAR
    =============================== */
 function eliminarPelicula(id, titulo) {
-    document.getElementById("deleteId").value = id;
-    document.getElementById("textoEliminar").innerText = titulo;
-    new bootstrap.Modal(document.getElementById("modalEliminar")).show();
+    abrirModalEliminar(id, titulo);
 }
 
 /* ===============================

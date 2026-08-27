@@ -1,14 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    /* ===============================
-       VALIDACIONES BÁSICAS
-       =============================== */
-    const validarCorreo = correo =>
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo);
-
-    const validarTelefono = tel =>
-        /^[0-9+\-\s]{6,20}$/.test(tel);
-
+    /* validarCorreo/validarTelefono vienen de shared.js */
     const limpiar = inputs => {
         inputs.forEach(i => {
             i.classList.remove("is-invalid");
@@ -158,27 +150,14 @@ document.addEventListener("DOMContentLoaded", () => {
     /* ===============================
        DATATABLE
        =============================== */
-    $("#tablaUsuarios").DataTable({
-        responsive: true,
-        pageLength: 10,
-        language: {
-            url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
-        },
-        columnDefs: [
-            { targets: 0, visible: false, searchable: false },
-            { targets: -1, orderable: false }
-        ]
-    });
+    initDataTableSimple("#tablaUsuarios");
 });
 
 /* ===============================
    MODAL ELIMINAR USUARIO
    =============================== */
 function eliminarUsuario(id, nombre, apellido) {
-    document.getElementById("deleteId").value = id;
-    document.getElementById("textoEliminar").innerText =
-        `${nombre} ${apellido}`;
-    new bootstrap.Modal(document.getElementById("modalEliminar")).show();
+    abrirModalEliminar(id, `${nombre} ${apellido}`);
 }
 
 const correoInput = document.getElementById("addCorreo");
@@ -186,7 +165,7 @@ if (correoInput) {
     correoInput.addEventListener("blur", () => {
         const correo = correoInput.value.trim();
         if (!correo) return;
-        fetch("validaCorreo.php", {
+        fetch(window.BASE_PATH + "/validaCorreo.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: "correo=" + encodeURIComponent(correo)

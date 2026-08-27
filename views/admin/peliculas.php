@@ -402,6 +402,7 @@ window.actoresHTML = `
 <?php endforeach; ?>
 `;
 </script>
+<script src="js/admin-crud.js"></script>
 <script src="js/peliculas.js"></script>
 <?php
 $contenido = ob_get_clean();

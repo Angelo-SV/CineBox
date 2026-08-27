@@ -256,6 +256,8 @@ ob_start();
     </div>
   </div>
 </div>
+<script src="<?= BASE_PATH ?>/js/shared.js"></script>
+<script src="<?= BASE_PATH ?>/js/alquiler-simple.js"></script>
 <script src="<?= BASE_PATH ?>/js/favoritos.js"></script>
 <?php
 $contenido = ob_get_clean();

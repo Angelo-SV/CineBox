@@ -261,7 +261,7 @@ ob_start();
     </div>
   </div>
 </div>
-<script src="<?= BASE_PATH ?>/js/historial.js"></script>
+<script src="<?= BASE_PATH ?>/js/alquiler-simple.js"></script>
 <?php
 $contenido = ob_get_clean();
 include __DIR__ . '/../layouts/layout_perfil.php';

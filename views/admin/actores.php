@@ -140,6 +140,7 @@ ob_start();
         </form>
     </div>
 </div>
+<script src="js/admin-crud.js"></script>
 <script src="js/actores.js"></script>
 <?php
 $contenido = ob_get_clean();

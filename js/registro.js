@@ -46,15 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
             valido = false;
         }
 
-        // Validación de confirmación
-        if (confirmarContrasena === "") {
-            mostrarError("confirmarContrasena", "Debe confirmar su contraseña.");
-            valido = false;
-        } else if (contrasena !== confirmarContrasena) {
-            mostrarError("confirmarContrasena", "Las contraseñas no coinciden.");
-            valido = false;
-        }
-
         // Si hay errores, no enviamos el formulario
         if (form.querySelector(".is-invalid")) return;
 
@@ -79,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
         formData.append("correo", correo);
 
         try {
-            const response = await fetch("validaCorreo.php", { method: "POST", body: formData });
+            const response = await fetch(window.BASE_PATH + "/validaCorreo.php", { method: "POST", body: formData });
             const data = await response.json();
             const feedback = correoInput.nextElementSibling;
 

@@ -203,6 +203,8 @@ ob_start();
         </form>
     </div>
 </div>
+<script src="js/shared.js"></script>
+<script src="js/admin-crud.js"></script>
 <script src="js/proveedores.js"></script>
 <?php
 $contenido = ob_get_clean();
