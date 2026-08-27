@@ -11,7 +11,7 @@ ob_start();
         <div class="card-body text-center">
             <h5 class="mb-3">No tienes películas en tu carrito</h5>
                 <p>Visita nuestro catálogo para empezar a disfrutar contenido.</p>
-            <a href="/Videoteca_ElResplandor/" class="btn btn-warning">
+            <a href="<?= BASE_PATH ?>/" class="btn btn-warning">
                 <i class="bi bi-film"></i> Ir al catálogo
             </a>
         </div>
@@ -43,7 +43,7 @@ ob_start();
                     <td><?= htmlspecialchars($p['ESTUDIO']) ?></td>
                     <td>₡<?= number_format($p['PRECIO'],2) ?></td>
                     <td>
-                        <a href="/Videoteca_ElResplandor/pelicula?id=<?= $p['ID_PELICULA'] ?>"
+                        <a href="<?= BASE_PATH ?>/pelicula?id=<?= $p['ID_PELICULA'] ?>"
                         class="btn btn-sm btn-outline-info">
                         <i class="bi bi-info-circle"></i>
                         </a>
@@ -67,7 +67,7 @@ ob_start();
                         ₡<?= number_format($total,2) ?>
                     </span>
                 </h4>
-                <a href="/Videoteca_ElResplandor/"
+                <a href="<?= BASE_PATH ?>/"
                 class="btn btn-outline-warning btn-sm">
                 <i class="bi bi-camera-reels me-1"></i>
                 Agregar más películas
@@ -163,7 +163,7 @@ ob_start();
         </p>
       </div>
       <div class="modal-footer border-warning justify-content-center">
-        <a href="/Videoteca_ElResplandor/perfil/biblioteca"
+        <a href="<?= BASE_PATH ?>/perfil/biblioteca"
            class="btn btn-warning">
            Ir a mi biblioteca
         </a>
@@ -202,7 +202,7 @@ ob_start();
     </div>
   </div>
 </div>
-<script src="/Videoteca_ElResplandor/js/carrito.js"></script>
+<script src="<?= BASE_PATH ?>/js/carrito.js"></script>
 <?php
 $contenido = ob_get_clean();
 include __DIR__ . '/../layouts/layout_perfil.php';

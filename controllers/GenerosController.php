@@ -15,7 +15,7 @@ class GenerosController
 
         } catch (Exception $e) {
             error_log($e->getMessage());
-            header('Location: /Videoteca_ElResplandor/generos?msg=error_bd');
+            header('Location: ' . BASE_PATH . '/generos?msg=error_bd');
             exit;
         }
     }
@@ -26,7 +26,7 @@ class GenerosController
     public static function accion()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /Videoteca_ElResplandor/generos');
+            header('Location: ' . BASE_PATH . '/generos');
             exit;
         }
 
@@ -43,7 +43,7 @@ class GenerosController
                     self::validarDatos($data, 'insert');
                     Genero::crear($data['descripcion']);
 
-                    header('Location: /Videoteca_ElResplandor/generos?msg=insertado');
+                    header('Location: ' . BASE_PATH . '/generos?msg=insertado');
                     break;
 
                 case 'update':
@@ -55,7 +55,7 @@ class GenerosController
                     self::validarDatos($data, 'update');
                     Genero::actualizar($data['id'], $data['descripcion']);
 
-                    header('Location: /Videoteca_ElResplandor/generos?msg=actualizado');
+                    header('Location: ' . BASE_PATH . '/generos?msg=actualizado');
                     break;
 
                 case 'delete':
@@ -66,7 +66,7 @@ class GenerosController
                     self::validarDatos($data, 'delete');
                     Genero::eliminar($data['id']);
 
-                    header('Location: /Videoteca_ElResplandor/generos?msg=eliminado');
+                    header('Location: ' . BASE_PATH . '/generos?msg=eliminado');
                     break;
 
                 default:
@@ -76,7 +76,7 @@ class GenerosController
         } catch (Exception $e) {
             error_log($e->getMessage());
             header(
-                'Location: /Videoteca_ElResplandor/generos?msg=error_campos&detalle=' .
+                'Location: ' . BASE_PATH . '/generos?msg=error_campos&detalle=' .
                 urlencode($e->getMessage())
             );
         }

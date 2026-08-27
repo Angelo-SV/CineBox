@@ -75,7 +75,7 @@ $videoURL = VIDEO_DEFAULT;
         if(document.referrer !== ""){
             history.back();
         }else{
-            window.location.href="/Videoteca_ElResplandor/";
+            window.location.href="<?= BASE_PATH ?>/";
         }
     }
 </script>

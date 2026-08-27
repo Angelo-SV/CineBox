@@ -7,6 +7,7 @@ $contenido = $contenido ?? '<p>Bienvenido a CineBox</p>';
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>window.BASE_PATH = "<?= BASE_PATH ?>";</script>
     <title><?= htmlspecialchars($titulo) ?></title>
     <link rel="icon" href="https://firebasestorage.googleapis.com/v0/b/videotecacinebox.firebasestorage.app/o/Logos%2FcineBox_logo2.png?alt=media&token=25bcc6e4-890b-4557-95e0-07444f5d81f4" 
     type="image/png">

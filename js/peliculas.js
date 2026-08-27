@@ -265,7 +265,7 @@ document.querySelectorAll(".btnCast").forEach(btn => {
         const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
         modal.show();
 
-        fetch(`/Videoteca_ElResplandor/cast/listarActores?id=${peliculaId}`)
+        fetch(`${window.BASE_PATH}/cast/listarActores?id=${peliculaId}`)
             .then(r => r.json())
             .then(data => {
                 ocultarLoader();

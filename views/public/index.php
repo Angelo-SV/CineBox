@@ -212,7 +212,7 @@ ob_start();
         </p>
       </div>
       <div class="modal-footer border-warning justify-content-center">
-        <a href="/Videoteca_ElResplandor/biblioteca"
+        <a href="<?= BASE_PATH ?>/biblioteca"
            class="btn btn-warning">
            Ir a mi biblioteca
         </a>
@@ -270,7 +270,7 @@ ob_start();
         </div>
       </div>
       <div class="modal-footer border-warning justify-content-center">
-      <a href="/Videoteca_ElResplandor/perfil/carrito" 
+      <a href="<?= BASE_PATH ?>/perfil/carrito" 
         id="btnIrCarrito"
         class="btn btn-warning">
         <i class="bi bi-cart-fill me-2"></i>Ir al carrito

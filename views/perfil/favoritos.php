@@ -11,7 +11,7 @@ ob_start();
       <div class="card-body text-center">
           <h5 class="mb-3">No tienes películas en tu lista</h5>
               <p>Visita nuestro catálogo para empezar a disfrutar contenido.</p>
-          <a href="/Videoteca_ElResplandor/" class="btn btn-warning">
+          <a href="<?= BASE_PATH ?>/" class="btn btn-warning">
               <i class="bi bi-film"></i> Ir al catálogo
           </a>
       </div>
@@ -40,12 +40,12 @@ ob_start();
             ₡<?= number_format($p['PRECIO'],2) ?>
           </p>
           <div class="mt-auto d-grid gap-2">
-            <a href="/Videoteca_ElResplandor/pelicula?id=<?= $p['ID_PELICULA'] ?>" class="btn btn-outline-info btn-sm">
+            <a href="<?= BASE_PATH ?>/pelicula?id=<?= $p['ID_PELICULA'] ?>" class="btn btn-outline-info btn-sm">
             <i class="bi bi-info-circle me-1"></i>
               Detalle
             </a>
             <?php if ($p['ES_ALQUILADA'] == 1): ?>
-              <a href="/Videoteca_ElResplandor/ver/<?= $p['ID_TRANSACCION'] ?>" class="btn btn-warning btn-sm">
+              <a href="<?= BASE_PATH ?>/ver/<?= $p['ID_TRANSACCION'] ?>" class="btn btn-warning btn-sm">
               <i class="bi bi-play-fill"></i>Ver
               </a>
             <?php else: ?>
@@ -88,7 +88,7 @@ ob_start();
         </div>
       </div>
       <div class="modal-footer border-warning justify-content-center">
-        <a href="/Videoteca_ElResplandor/perfil/carrito"
+        <a href="<?= BASE_PATH ?>/perfil/carrito"
            id="btnIrCarrito"
            class="btn btn-warning">
            <i class="bi bi-cart-fill me-2"></i>Ir al carrito
@@ -216,7 +216,7 @@ ob_start();
         </p>
       </div>
       <div class="modal-footer border-warning justify-content-center">
-        <a href="/Videoteca_ElResplandor/perfil/biblioteca"
+        <a href="<?= BASE_PATH ?>/perfil/biblioteca"
            class="btn btn-warning">
            Ir a mi biblioteca
         </a>
@@ -256,7 +256,7 @@ ob_start();
     </div>
   </div>
 </div>
-<script src="/Videoteca_ElResplandor/js/favoritos.js"></script>
+<script src="<?= BASE_PATH ?>/js/favoritos.js"></script>
 <?php
 $contenido = ob_get_clean();
 include __DIR__ . '/../layouts/layout_perfil.php';

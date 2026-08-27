@@ -64,7 +64,7 @@ function confirmarPagoTarjeta() {
 function procesarAlquiler(metodo, origen) {
     const btnPrincipal = document.getElementById("btnAlquilarTodo");
     const btnTarjeta = document.getElementById("btnConfirmarTarjeta");
-    fetch("/Videoteca_ElResplandor/carrito-alquilar", {
+    fetch(window.BASE_PATH + "/carrito-alquilar", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ metodo_pago: metodo })
@@ -116,7 +116,7 @@ function procesarAlquiler(metodo, origen) {
    ELIMINAR ITEM
 ================================ */
 function eliminarItem(idPelicula) {
-    fetch("/Videoteca_ElResplandor/carrito-eliminar", {
+    fetch(window.BASE_PATH + "/carrito-eliminar", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id_pelicula: idPelicula })

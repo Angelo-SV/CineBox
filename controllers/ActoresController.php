@@ -15,7 +15,7 @@ class ActoresController {
 
         } catch (Exception $e) {
             error_log($e->getMessage());
-            header('Location: /Videoteca_ElResplandor/actores?msg=error_bd');
+            header('Location: ' . BASE_PATH . '/actores?msg=error_bd');
             exit;
         }
     }
@@ -26,7 +26,7 @@ class ActoresController {
     public static function accion()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /Videoteca_ElResplandor/actores');
+            header('Location: ' . BASE_PATH . '/actores');
             exit;
         }
 
@@ -44,7 +44,7 @@ class ActoresController {
                     self::validarDatos($data, 'insert');
                     Actor::insertar($data['nombre']);
 
-                    header('Location: /Videoteca_ElResplandor/actores?msg=insertado');
+                    header('Location: ' . BASE_PATH . '/actores?msg=insertado');
                     break;
 
                 /* ACTUALIZAR */
@@ -57,7 +57,7 @@ class ActoresController {
                     self::validarDatos($data, 'update');
                     Actor::actualizar($data['id'], $data['nombre']);
 
-                    header('Location: /Videoteca_ElResplandor/actores?msg=actualizado');
+                    header('Location: ' . BASE_PATH . '/actores?msg=actualizado');
                     break;
 
                 /* ELIMINAR */
@@ -69,7 +69,7 @@ class ActoresController {
                     self::validarDatos($data, 'delete');
                     Actor::eliminar($data['id']);
 
-                    header('Location: /Videoteca_ElResplandor/actores?msg=eliminado');
+                    header('Location: ' . BASE_PATH . '/actores?msg=eliminado');
                     break;
 
                 default:
@@ -79,7 +79,7 @@ class ActoresController {
         } catch (Exception $e) {
             error_log($e->getMessage());
             header(
-                'Location: /Videoteca_ElResplandor/actores?msg=error_campos&detalle=' .
+                'Location: ' . BASE_PATH . '/actores?msg=error_campos&detalle=' .
                 urlencode($e->getMessage())
             );
         }

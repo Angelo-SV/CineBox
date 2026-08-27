@@ -116,7 +116,7 @@ ob_start();
 <!-- ================= MODAL AGREGAR ================= -->
 <div class="modal fade" id="modalAgregar">
     <div class="modal-dialog modal-xl">
-        <form id="formAgregar" method="POST" action="/Videoteca_ElResplandor/peliculas/crear"
+        <form id="formAgregar" method="POST" action="<?= BASE_PATH ?>/peliculas/crear"
               class="modal-content bg-dark text-light">
             <div class="modal-header">
                 <h5 class="modal-title text-warning">Agregar Película</h5>
@@ -227,7 +227,7 @@ ob_start();
 <!-- ================= MODAL EDITAR ================= -->
 <div class="modal fade" id="modalEditar">
     <div class="modal-dialog modal-xl">
-        <form id="formEditar" method="POST" action="/Videoteca_ElResplandor/peliculas/actualizar"
+        <form id="formEditar" method="POST" action="<?= BASE_PATH ?>/peliculas/actualizar"
               class="modal-content bg-dark text-light">
             <input type="hidden" id="editId" name="id">
             <div class="modal-header">
@@ -339,7 +339,7 @@ ob_start();
 <!-- ================= MODAL ELIMINAR ================= -->
 <div class="modal fade" id="modalEliminar">
     <div class="modal-dialog">
-        <form method="POST" action="/Videoteca_ElResplandor/peliculas/eliminar" class="modal-content bg-dark text-light">
+        <form method="POST" action="<?= BASE_PATH ?>/peliculas/eliminar" class="modal-content bg-dark text-light">
             <input type="hidden" id="deleteId" name="id">
             <div class="modal-header">
                 <h5 class="modal-title text-danger">Eliminar Película</h5>
@@ -359,7 +359,7 @@ ob_start();
 <!-- ================= MODAL AÑADIR CAST ================= -->
 <div class="modal fade" id="modalCast">
     <div class="modal-dialog modal-lg">
-        <form id="formCast" method="POST" action="/Videoteca_ElResplandor/cast/guardar"
+        <form id="formCast" method="POST" action="<?= BASE_PATH ?>/cast/guardar"
               class="modal-content bg-dark text-light">
             <!-- <input type="hidden" name="action" value="save_cast"> -->
             <input type="hidden" name="pelicula" id="castPeliculaId">

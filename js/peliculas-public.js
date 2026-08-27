@@ -70,7 +70,7 @@ function toggleFavorito(idPelicula, boton) {
     boton.innerHTML = `
         <span class="spinner-border spinner-border-sm"></span>
     `;
-    fetch(`/Videoteca_ElResplandor/favoritos-toggle?id=${idPelicula}`)
+    fetch(`${window.BASE_PATH}/favoritos-toggle?id=${idPelicula}`)
         .then(r => r.json())
         .then(data => {
             boton.disabled = false;
@@ -117,7 +117,7 @@ function toggleCarrito(idPelicula, boton) {
     boton.innerHTML = `
         <span class="spinner-border spinner-border-sm"></span>
     `;
-    fetch(`/Videoteca_ElResplandor/carrito-toggle?id=${idPelicula}`)
+    fetch(`${window.BASE_PATH}/carrito-toggle?id=${idPelicula}`)
         .then(r => r.json())
         .then(data => {
             boton.disabled = false;
@@ -183,7 +183,7 @@ function cargarPeliculas() {
     const soloLista = switchLista && switchLista.checked ? 1 : 0;
     const soloAlquiladas = switchAlquiladas && switchAlquiladas.checked ? 1 : 0;
     const soloCarrito = switchCarrito && switchCarrito.checked ? 1 : 0;
-    fetch(`/Videoteca_ElResplandor/peliculas-publicas?pagina=${paginaActual}` +
+    fetch(`${window.BASE_PATH}/peliculas-publicas?pagina=${paginaActual}` +
             `&genero=${genero}` +
             `&estudio=${estudio}` +
             `&q=${encodeURIComponent(texto)}` +
@@ -341,7 +341,7 @@ function mostrarError(mensaje) {
         </div>`;
 }
 function cargarFiltros() {
-    fetch('/Videoteca_ElResplandor/peliculas-filtros')
+    fetch(window.BASE_PATH + '/peliculas-filtros')
         .then(r => r.json())
         .then(data => {
             if (!data.ok) return;
@@ -401,7 +401,7 @@ function abrirModalAlquiler(id) {
         document.getElementById('modalAlquiler')
     );
     modal.show();
-    fetch(`/Videoteca_ElResplandor/pelicula-json?id=${id}`)
+    fetch(`${window.BASE_PATH}/pelicula-json?id=${id}`)
         .then(r => {
             if (!r.ok) throw new Error('HTTP error');
             return r.json();
@@ -476,7 +476,7 @@ document.getElementById('btnConfirmarAlquiler')
     btn.disabled = true;
     btn.innerHTML = 'Procesando...';
     const metodo = document.getElementById('alqMetodo').value;
-    fetch('/Videoteca_ElResplandor/alquilar', {
+    fetch(window.BASE_PATH + '/alquilar', {
         method: 'POST',
         headers: {'Content-Type':'application/json'},
         body: JSON.stringify({

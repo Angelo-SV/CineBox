@@ -6,7 +6,7 @@ class AdminController
     public static function index()
     {
         if (!isset($_SESSION['id'])) {
-            header("Location: /Videoteca_ElResplandor/login");
+            header("Location: " . BASE_PATH . "/login");
             exit;
         }
         $resumen = Admin::obtenerResumenAdmin();

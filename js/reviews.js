@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loader.style.display = 'inline-block';
         btnText.textContent = 'Enviando...';
         const data = new FormData(form);
-        fetch('/Videoteca_ElResplandor/review-guardar', {
+        fetch(window.BASE_PATH + '/review-guardar', {
                 method: 'POST',
                 body: data
             })
@@ -118,7 +118,7 @@ function toggleFavoritoDetalle(idPelicula, boton) {
     boton.innerHTML = `
         <span class="spinner-border spinner-border-sm"></span>
     `;
-    fetch(`/Videoteca_ElResplandor/favoritos-toggle?id=${idPelicula}`)
+    fetch(`${window.BASE_PATH}/favoritos-toggle?id=${idPelicula}`)
         .then(r => r.json())
         .then(data => {
             boton.disabled = false;
@@ -166,7 +166,7 @@ function toggleCarritoDetalle(idPelicula, boton) {
     boton.innerHTML = `
         <span class="spinner-border spinner-border-sm"></span>
     `;
-    fetch(`/Videoteca_ElResplandor/carrito-toggle?id=${idPelicula}`)
+    fetch(`${window.BASE_PATH}/carrito-toggle?id=${idPelicula}`)
         .then(r => r.json())
         .then(data => {
             boton.disabled = false;
@@ -260,7 +260,7 @@ function abrirModalAlquiler(id) {
         document.getElementById('modalAlquiler')
     );
     modal.show();
-    fetch(`/Videoteca_ElResplandor/pelicula-json?id=${id}`)
+    fetch(`${window.BASE_PATH}/pelicula-json?id=${id}`)
         .then(r => {
             if (!r.ok) throw new Error('HTTP error');
             return r.json();
@@ -336,7 +336,7 @@ document.getElementById('btnConfirmarAlquiler')
         btn.disabled = true;
         btn.innerHTML = 'Procesando...';
         const metodo = document.getElementById('alqMetodo').value;
-        fetch('/Videoteca_ElResplandor/alquilar', {
+        fetch(window.BASE_PATH + '/alquilar', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -378,6 +378,6 @@ function volverPagina() {
     if (document.referrer !== "") {
         history.back();
     } else {
-        window.location.href = "/Videoteca_ElResplandor/";
+        window.location.href = window.BASE_PATH + "/";
     }
 }

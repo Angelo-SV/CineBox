@@ -35,7 +35,7 @@ ob_start();
               </div>
           <?php endif; ?>
         <div class="card-body bg-dark text-light">
-          <form id="formRegistro" method="POST" action="/Videoteca_ElResplandor/usuarios/crear">
+          <form id="formRegistro" method="POST" action="<?= BASE_PATH ?>/usuarios/crear">
           <input type="hidden" name="action" value="insert">
           <input type="hidden" name="origen" value="registro">
             <div class="mb-3">

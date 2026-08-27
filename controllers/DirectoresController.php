@@ -15,7 +15,7 @@ class DirectoresController {
 
         } catch (Exception $e) {
             error_log($e->getMessage());
-            header('Location: /Videoteca_ElResplandor/directores?msg=error_bd');
+            header('Location: ' . BASE_PATH . '/directores?msg=error_bd');
             exit;
         }
     }
@@ -26,7 +26,7 @@ class DirectoresController {
     public static function accion()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /Videoteca_ElResplandor/directores');
+            header('Location: ' . BASE_PATH . '/directores');
             exit;
         }
 
@@ -44,7 +44,7 @@ class DirectoresController {
                     self::validarDatos($data, 'insert');
                     Director::insertar($data['nombre']);
 
-                    header('Location: /Videoteca_ElResplandor/directores?msg=insertado');
+                    header('Location: ' . BASE_PATH . '/directores?msg=insertado');
                     break;
 
                 /* ACTUALIZAR */
@@ -57,7 +57,7 @@ class DirectoresController {
                     self::validarDatos($data, 'update');
                     Director::actualizar($data['id'], $data['nombre']);
 
-                    header('Location: /Videoteca_ElResplandor/directores?msg=actualizado');
+                    header('Location: ' . BASE_PATH . '/directores?msg=actualizado');
                     break;
 
                 /* ELIMINAR */
@@ -69,7 +69,7 @@ class DirectoresController {
                     self::validarDatos($data, 'delete');
                     Director::eliminar($data['id']);
 
-                    header('Location: /Videoteca_ElResplandor/directores?msg=eliminado');
+                    header('Location: ' . BASE_PATH . '/directores?msg=eliminado');
                     break;
 
                 default:
@@ -79,7 +79,7 @@ class DirectoresController {
         } catch (Exception $e) {
             error_log($e->getMessage());
             header(
-                'Location: /Videoteca_ElResplandor/directores?msg=error_campos&detalle=' .
+                'Location: ' . BASE_PATH . '/directores?msg=error_campos&detalle=' .
                 urlencode($e->getMessage())
             );
         }

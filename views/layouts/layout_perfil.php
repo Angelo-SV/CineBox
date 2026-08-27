@@ -16,6 +16,7 @@ if (count($partes) >= 2) {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <script>window.BASE_PATH = "<?= BASE_PATH ?>";</script>
     <title><?= $titulo ?></title>
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -95,7 +96,7 @@ if (count($partes) >= 2) {
 <!-- NAVBAR -->
 <nav class="navbar navbar-dark bg-dark fixed-top shadow">
     <div class="container-fluid">
-    <a href="/Videoteca_ElResplandor/" class="navbar-brand d-flex align-items-center">
+    <a href="<?= BASE_PATH ?>/" class="navbar-brand d-flex align-items-center">
             <img src="https://firebasestorage.googleapis.com/v0/b/videotecacinebox.firebasestorage.app/o/Logos%2FcineBox_logo3.png?alt=media&token=31ad1239-a16d-46cc-a1a2-ffd773a17a6a" 
         width="240" height="60" alt="CineBox Logo">
                 <span class="ms-2">Perfil de Usuario</span>
@@ -105,13 +106,13 @@ if (count($partes) >= 2) {
             <?php if (
                 isset($_SESSION['rol']) &&
                 $_SESSION['rol'] == ROL_ADMIN): ?>
-                <a href="/Videoteca_ElResplandor/admin"
+                <a href="<?= BASE_PATH ?>/admin"
                 class="btn btn-outline-light">
                     <i class="bi bi-shield-lock"></i>
                     Admin
                 </a>
             <?php endif; ?>
-                <a href="/Videoteca_ElResplandor/auth/logout" class="btn btn-warning">
+                <a href="<?= BASE_PATH ?>/auth/logout" class="btn btn-warning">
                 <i class="bi bi-box-arrow-right"></i>
                     Cerrar Sesión
                 </a>
@@ -130,19 +131,19 @@ if (count($partes) >= 2) {
     <small class="text-muted d-block mb-4">
         <?= htmlspecialchars($_SESSION['correo']) ?>
     </small>
-    <a href="/Videoteca_ElResplandor/perfil" class="<?= $ruta === '/Videoteca_ElResplandor/perfil' ? 'active' : '' ?>">
+    <a href="<?= BASE_PATH ?>/perfil" class="<?= $ruta === BASE_PATH . '/perfil' ? 'active' : '' ?>">
         <i class="bi bi-person-circle me-2"></i> Mi Perfil
     </a>
-    <a href="/Videoteca_ElResplandor/perfil/biblioteca" class="<?= str_contains($ruta, 'biblioteca') ? 'active' : '' ?>">
+    <a href="<?= BASE_PATH ?>/perfil/biblioteca" class="<?= str_contains($ruta, 'biblioteca') ? 'active' : '' ?>">
         <i class="bi bi-collection-play me-2"></i> Mi Biblioteca
     </a>
-    <a href="/Videoteca_ElResplandor/perfil/carrito" class="<?= str_contains($ruta, 'carrito') ? 'active' : '' ?>">
+    <a href="<?= BASE_PATH ?>/perfil/carrito" class="<?= str_contains($ruta, 'carrito') ? 'active' : '' ?>">
         <i class="bi bi-cart me-2"></i> Mi Carrito
     </a>
-    <a href="/Videoteca_ElResplandor/perfil/favoritos" class="<?= str_contains($ruta, 'favoritos') ? 'active' : '' ?>">
+    <a href="<?= BASE_PATH ?>/perfil/favoritos" class="<?= str_contains($ruta, 'favoritos') ? 'active' : '' ?>">
         <i class="bi bi-heart me-2"></i> Mi Lista
     </a>
-    <a href="/Videoteca_ElResplandor/perfil/historial"class="<?= str_contains($ruta, 'historial') ? 'active' : '' ?>">
+    <a href="<?= BASE_PATH ?>/perfil/historial"class="<?= str_contains($ruta, 'historial') ? 'active' : '' ?>">
         <i class="bi bi-clock-history me-2"></i> Historial
     </a>
 </aside>

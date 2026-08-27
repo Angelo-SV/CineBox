@@ -7,7 +7,7 @@
     <div class="card-body text-center">
         <h5 class="mb-3">No tienes películas en tu biblioteca</h5>
             <p>Visita nuestro catálogo para empezar a disfrutar contenido.</p>
-        <a href="/Videoteca_ElResplandor/" class="btn btn-warning">
+        <a href="<?= BASE_PATH ?>/" class="btn btn-warning">
             <i class="bi bi-film"></i> Ir al catálogo
         </a>
     </div>
@@ -38,11 +38,11 @@
                     <strong><?= $dias ?>d <?= $horas ?>h</strong>
                     </p>
                 <div class="mt-auto d-grid gap-2">
-                    <a href="/Videoteca_ElResplandor/pelicula?id=<?= $p['ID_PELICULA'] ?>"
+                    <a href="<?= BASE_PATH ?>/pelicula?id=<?= $p['ID_PELICULA'] ?>"
                     class="btn btn-outline-warning btn-sm">
                     <i class="bi bi-info-circle"></i> Detalle
                     </a>
-                    <a href="/Videoteca_ElResplandor/ver/<?= $p['ID_TRANSACCION'] ?>"
+                    <a href="<?= BASE_PATH ?>/ver/<?= $p['ID_TRANSACCION'] ?>"
                     class="btn btn-warning btn-sm">
                     <i class="bi bi-play-fill"></i> Ver
                     </a>

@@ -7,7 +7,7 @@ function toggleFavoritoLista(idPelicula, boton) {
     boton.disabled = true;
     boton.innerHTML =
         `<span class="spinner-border spinner-border-sm"></span>`;
-    fetch(`/Videoteca_ElResplandor/favoritos-toggle?id=${idPelicula}`)
+    fetch(`${window.BASE_PATH}/favoritos-toggle?id=${idPelicula}`)
         .then(r => r.json())
         .then(data => {
             boton.disabled = false;
@@ -42,7 +42,7 @@ function toggleCarritoFavoritos(idPelicula, boton) {
     boton.disabled = true;
     boton.innerHTML =
         `<span class="spinner-border spinner-border-sm"></span>`;
-    fetch(`/Videoteca_ElResplandor/carrito-toggle?id=${idPelicula}`)
+    fetch(`${window.BASE_PATH}/carrito-toggle?id=${idPelicula}`)
         .then(r => r.json())
         .then(data => {
             boton.disabled = false;
@@ -116,7 +116,7 @@ function alquilarPelicula(id) {
         document.getElementById('modalAlquiler')
     );
     modal.show();
-    fetch(`/Videoteca_ElResplandor/pelicula-json?id=${id}`)
+    fetch(`${window.BASE_PATH}/pelicula-json?id=${id}`)
         .then(r => r.json())
         .then(data => {
             if (!data.ok) throw "error";
@@ -157,7 +157,7 @@ if (btnConfirmar) {
         btn.innerHTML = "Procesando...";
         const metodo =
             document.getElementById('alqMetodo').value;
-        fetch('/Videoteca_ElResplandor/alquilar', {
+        fetch(window.BASE_PATH + '/alquilar', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

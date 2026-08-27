@@ -61,7 +61,7 @@ class ProveedoresController
     public static function accion()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /Videoteca_ElResplandor/proveedores');
+            header('Location: ' . BASE_PATH . '/proveedores');
             exit;
         }
 
@@ -73,42 +73,42 @@ class ProveedoresController
                 case 'insert':
                     $errores = self::validarDatos($_POST);
                     if (!empty($errores)) {
-                        header('Location: /Videoteca_ElResplandor/proveedores?msg=error_campos');
+                        header('Location: ' . BASE_PATH . '/proveedores?msg=error_campos');
                         exit;
                     }
 
                     Proveedor::crear($_POST);
-                    header('Location: /Videoteca_ElResplandor/proveedores?msg=insertado');
+                    header('Location: ' . BASE_PATH . '/proveedores?msg=insertado');
                     break;
 
                 case 'update':
                     $errores = self::validarDatos($_POST, true);
                     if (!empty($errores)) {
-                        header('Location: /Videoteca_ElResplandor/proveedores?msg=error_campos');
+                        header('Location: ' . BASE_PATH . '/proveedores?msg=error_campos');
                         exit;
                     }
 
                     Proveedor::actualizar((int)$_POST['id'], $_POST);
-                    header('Location: /Videoteca_ElResplandor/proveedores?msg=actualizado');
+                    header('Location: ' . BASE_PATH . '/proveedores?msg=actualizado');
                     break;
 
                 case 'delete':
                     $id = (int)($_POST['id'] ?? 0);
                     if ($id <= 0) {
-                        header('Location: /Videoteca_ElResplandor/proveedores?msg=error_campos');
+                        header('Location: ' . BASE_PATH . '/proveedores?msg=error_campos');
                         exit;
                     }
 
                     Proveedor::eliminar($id);
-                    header('Location: /Videoteca_ElResplandor/proveedores?msg=eliminado');
+                    header('Location: ' . BASE_PATH . '/proveedores?msg=eliminado');
                     break;
 
                 default:
-                    header('Location: /Videoteca_ElResplandor/proveedores?msg=error_bd');
+                    header('Location: ' . BASE_PATH . '/proveedores?msg=error_bd');
             }
         } catch (Exception $e) {
             header(
-                'Location: /Videoteca_ElResplandor/proveedores?msg=error_bd&detalle=' .
+                'Location: ' . BASE_PATH . '/proveedores?msg=error_bd&detalle=' .
                 urlencode($e->getMessage())
             );
         }

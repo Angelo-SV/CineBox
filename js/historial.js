@@ -13,7 +13,7 @@ function alquilarPelicula(id) {
 
     modal.show();
 
-    fetch(`/Videoteca_ElResplandor/pelicula-json?id=${id}`)
+    fetch(`${window.BASE_PATH}/pelicula-json?id=${id}`)
         .then(r => r.json())
         .then(data => {
 
@@ -75,7 +75,7 @@ if (btnConfirmar) {
         const metodo =
             document.getElementById('alqMetodo').value;
 
-        fetch('/Videoteca_ElResplandor/alquilar', {
+        fetch(window.BASE_PATH + '/alquilar', {
 
                 method: 'POST',
 

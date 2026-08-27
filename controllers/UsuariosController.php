@@ -8,15 +8,19 @@ require_once __DIR__ . '/../models/Usuario.php';
 require_once __DIR__ . '/../middleware/admin.php';
 
 $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+$basePath = trim(BASE_PATH, '/');
+if ($basePath !== '' && str_starts_with($uri, $basePath)) {
+    $uri = trim(substr($uri, strlen($basePath)), '/');
+}
 
 /* ===============================
    LISTADO
    =============================== */
-   if ($uri === 'Videoteca_ElResplandor/usuarios') {
+   if ($uri === 'usuarios') {
     requireAdmin();
     // seguridad mínima
     if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
-        header("Location: /Videoteca_ElResplandor/");
+        header("Location: " . BASE_PATH . "/");
         exit;
     }
 
@@ -28,10 +32,10 @@ $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 /* ===============================
    INSERTAR USUARIO
    =============================== */
-   if ($uri === 'Videoteca_ElResplandor/usuarios/crear') {
+   if ($uri === 'usuarios/crear') {
 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        header("Location: /Videoteca_ElResplandor/");
+        header("Location: " . BASE_PATH . "/");
         exit;
     }
 
@@ -74,9 +78,9 @@ $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 
         /* 🔀 Redirect OK */
         if ($origen === 'registro') {
-            header("Location: /Videoteca_ElResplandor/login?msg=registro_ok");
+            header("Location: " . BASE_PATH . "/login?msg=registro_ok");
         } else {
-            header("Location: /Videoteca_ElResplandor/usuarios?msg=insertado");
+            header("Location: " . BASE_PATH . "/usuarios?msg=insertado");
         }
         exit;
 
@@ -85,9 +89,9 @@ $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
         /* 🔀 Redirect ERROR */
         if ($origen === 'registro') {
             $msg = $e->getMessage();
-            header("Location: /Videoteca_ElResplandor/registro?msg={$msg}");
+            header("Location: " . BASE_PATH . "/registro?msg={$msg}");
         } else {
-            header("Location: /Videoteca_ElResplandor/usuarios?msg=error_campos");
+            header("Location: " . BASE_PATH . "/usuarios?msg=error_campos");
         }
         exit;
     }
@@ -96,13 +100,13 @@ $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 /* ===============================
    ACTUALIZAR
    =============================== */
-if ($uri === 'Videoteca_ElResplandor/usuarios/actualizar') {
+if ($uri === 'usuarios/actualizar') {
     requireAdmin();
     try {
         $id = intval($_POST['id'] ?? 0);
 
         if ($id === $_SESSION['id'] && !isset($_POST['admin'])) {
-            header("Location: /Videoteca_ElResplandor/usuarios?msg=error_rol");
+            header("Location: " . BASE_PATH . "/usuarios?msg=error_rol");
             exit;
         }
 
@@ -130,12 +134,12 @@ if ($uri === 'Videoteca_ElResplandor/usuarios/actualizar') {
             'password'         => $password
         ]);
 
-        header("Location: /Videoteca_ElResplandor/usuarios?msg=actualizado");
+        header("Location: " . BASE_PATH . "/usuarios?msg=actualizado");
         exit;
 
     } catch (Exception $e) {
         error_log($e->getMessage());
-        header("Location: /Videoteca_ElResplandor/usuarios?msg=error_bd");
+        header("Location: " . BASE_PATH . "/usuarios?msg=error_bd");
         exit;
     }
 }
@@ -143,22 +147,22 @@ if ($uri === 'Videoteca_ElResplandor/usuarios/actualizar') {
 /* ===============================
    ELIMINAR
    =============================== */
-if ($uri === 'Videoteca_ElResplandor/usuarios/eliminar') {
+if ($uri === 'usuarios/eliminar') {
     requireAdmin();
     $id = intval($_POST['id'] ?? 0);
 
     if ($id === $_SESSION['id']) {
-        header("Location: /Videoteca_ElResplandor/usuarios?msg=error_autodelete");
+        header("Location: " . BASE_PATH . "/usuarios?msg=error_autodelete");
         exit;
     }
 
     try {
         Usuario::eliminar($id);
-        header("Location: /Videoteca_ElResplandor/usuarios?msg=eliminado");
+        header("Location: " . BASE_PATH . "/usuarios?msg=eliminado");
         exit;
     } catch (Exception $e) {
         error_log($e->getMessage());
-        header("Location: /Videoteca_ElResplandor/usuarios?msg=error_bd");
+        header("Location: " . BASE_PATH . "/usuarios?msg=error_bd");
         exit;
     }
 }

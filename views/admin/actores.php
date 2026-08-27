@@ -78,7 +78,7 @@ ob_start();
 <!-- MODAL AGREGAR -->
 <div class="modal fade" id="modalAgregar">
     <div class="modal-dialog">
-        <form id="formAgregar" method="POST" action="/Videoteca_ElResplandor/actores/crear" class="modal-content bg-dark text-light">
+        <form id="formAgregar" method="POST" action="<?= BASE_PATH ?>/actores/crear" class="modal-content bg-dark text-light">
             <input type="hidden" name="action" value="insert">
             <div class="modal-header">
                 <h5 class="modal-title text-warning">Agregar Actor</h5>
@@ -99,7 +99,7 @@ ob_start();
 <!-- MODAL EDITAR -->
 <div class="modal fade" id="modalEditar">
     <div class="modal-dialog">
-        <form id="formEditar" method="POST" action="/Videoteca_ElResplandor/actores/actualizar" class="modal-content bg-dark text-light">
+        <form id="formEditar" method="POST" action="<?= BASE_PATH ?>/actores/actualizar" class="modal-content bg-dark text-light">
             <input type="hidden" name="action" value="update">
             <input type="hidden" id="editId" name="id">
             <div class="modal-header">
@@ -121,7 +121,7 @@ ob_start();
 <!-- MODAL ELIMINAR -->
 <div class="modal fade" id="modalEliminar">
     <div class="modal-dialog">
-        <form method="POST" action="/Videoteca_ElResplandor/actores/eliminar" class="modal-content bg-dark text-light">
+        <form method="POST" action="<?= BASE_PATH ?>/actores/eliminar" class="modal-content bg-dark text-light">
             <input type="hidden" name="action" value="delete">    
             <input type="hidden" id="deleteId" name="id">
             <div class="modal-header">

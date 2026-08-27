@@ -28,7 +28,7 @@ class PeliculasController {
     
         } catch (Exception $e) {
             error_log($e->getMessage());
-            header("Location: /Videoteca_ElResplandor/peliculas?msg=error_bd");
+            header("Location: " . BASE_PATH . "/peliculas?msg=error_bd");
             exit;
         }
     }    
@@ -94,12 +94,12 @@ class PeliculasController {
     
             Pelicula::insertar($data);
     
-            header("Location: /Videoteca_ElResplandor/peliculas?msg=insertado");
+            header("Location: " . BASE_PATH . "/peliculas?msg=insertado");
             exit;
     
         } catch (Exception $e) {
             error_log($e->getMessage());
-            header("Location: /Videoteca_ElResplandor/peliculas?msg=error_campos&detalle=" . urlencode($e->getMessage()));
+            header("Location: " . BASE_PATH . "/peliculas?msg=error_campos&detalle=" . urlencode($e->getMessage()));
             exit;
         }
     }    
@@ -129,12 +129,12 @@ class PeliculasController {
     
             Pelicula::actualizar($data);
     
-            header("Location: /Videoteca_ElResplandor/peliculas?msg=actualizado");
+            header("Location: " . BASE_PATH . "/peliculas?msg=actualizado");
             exit;
     
         } catch (Exception $e) {
             error_log($e->getMessage());
-            header("Location: /Videoteca_ElResplandor/peliculas?msg=error_campos&detalle=" . urlencode($e->getMessage()));
+            header("Location: " . BASE_PATH . "/peliculas?msg=error_campos&detalle=" . urlencode($e->getMessage()));
             exit;
         }
     }    
@@ -146,12 +146,12 @@ class PeliculasController {
         requireAdmin();
         try {
             Pelicula::eliminar($_POST['id']);
-            header("Location: /Videoteca_ElResplandor/peliculas?msg=eliminado");
+            header("Location: " . BASE_PATH . "/peliculas?msg=eliminado");
             exit;
 
         } catch (Exception $e) {
             error_log($e->getMessage());
-            header("Location: /Videoteca_ElResplandor/peliculas?msg=error_bd");
+            header("Location: " . BASE_PATH . "/peliculas?msg=error_bd");
             exit;
         }
     }

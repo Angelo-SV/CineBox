@@ -102,7 +102,7 @@ ob_start();
 <!-- MODAL AGREGAR -->
 <div class="modal fade" id="modalAgregar">
     <div class="modal-dialog modal-lg">
-        <form id="formAgregar" method="POST" action="/Videoteca_ElResplandor/usuarios/crear"
+        <form id="formAgregar" method="POST" action="<?= BASE_PATH ?>/usuarios/crear"
               class="modal-content bg-dark text-light">
               <input type="hidden" name="origen" value="admin">
             <div class="modal-header">
@@ -170,7 +170,7 @@ ob_start();
 <!-- MODAL EDITAR -->
 <div class="modal fade" id="modalEditar">
     <div class="modal-dialog modal-lg">
-        <form id="formEditar" method="POST" action="/Videoteca_ElResplandor/usuarios/actualizar"
+        <form id="formEditar" method="POST" action="<?= BASE_PATH ?>/usuarios/actualizar"
               class="modal-content bg-dark text-light">
             <input type="hidden" id="editId" name="id">
             <div class="modal-header">
@@ -239,7 +239,7 @@ ob_start();
 <!-- MODAL ELIMINAR -->
 <div class="modal fade" id="modalEliminar">
     <div class="modal-dialog">
-        <form method="POST" action="/Videoteca_ElResplandor/usuarios/eliminar" class="modal-content bg-dark text-light">
+        <form method="POST" action="<?= BASE_PATH ?>/usuarios/eliminar" class="modal-content bg-dark text-light">
             <input type="hidden" id="deleteId" name="id">
             <div class="modal-header">
                 <h5 class="modal-title text-danger">Eliminar Usuario</h5>

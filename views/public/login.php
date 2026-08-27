@@ -58,7 +58,7 @@ if (isset($_SESSION['correo'])) {
               </div>
           <?php endif; ?>
         <div class="card-body bg-dark text-light">
-          <form id="loginForm" method="POST" action="/Videoteca_ElResplandor/auth/login" novalidate>
+          <form id="loginForm" method="POST" action="<?= BASE_PATH ?>/auth/login" novalidate>
           <input type="hidden" name="action" value="login">
             <div class="mb-3">
               <label for="correo" class="form-label">Correo Electrónico <span class="text-danger">*</span></label>

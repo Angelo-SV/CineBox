@@ -112,7 +112,7 @@ ob_start();
         </button>
         <?php if (!empty($_SESSION['id'])): ?>
             <?php if ($alquilada && !empty($pelicula['ID_TRANSACCION'])): ?>
-                <a href="/Videoteca_ElResplandor/ver/<?= $pelicula['ID_TRANSACCION'] ?>"
+                <a href="<?= BASE_PATH ?>/ver/<?= $pelicula['ID_TRANSACCION'] ?>"
                 class="btn btn-outline-warning">
                 <i class="bi bi-play-fill"></i>Ver película
                 </a>
@@ -339,7 +339,7 @@ if (!empty($_SESSION['id'])) {
         </p>
       </div>
       <div class="modal-footer border-warning justify-content-center">
-        <a href="/Videoteca_ElResplandor/perfil/biblioteca"
+        <a href="<?= BASE_PATH ?>/perfil/biblioteca"
            class="btn btn-warning">
            Ir a mi biblioteca
         </a>
@@ -397,7 +397,7 @@ if (!empty($_SESSION['id'])) {
         </div>
       </div>
       <div class="modal-footer border-warning justify-content-center">
-        <a href="/Videoteca_ElResplandor/perfil/carrito" 
+        <a href="<?= BASE_PATH ?>/perfil/carrito" 
             id="btnIrCarrito"
             class="btn btn-warning">
             <i class="bi bi-cart-fill me-2"></i>Ir al carrito

@@ -15,7 +15,7 @@ class EstudiosController
 
         } catch (Exception $e) {
             error_log($e->getMessage());
-            header('Location: /Videoteca_ElResplandor/estudios?msg=error_bd');
+            header('Location: ' . BASE_PATH . '/estudios?msg=error_bd');
             exit;
         }
     }
@@ -26,7 +26,7 @@ class EstudiosController
     public static function accion()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /Videoteca_ElResplandor/estudios');
+            header('Location: ' . BASE_PATH . '/estudios');
             exit;
         }
 
@@ -43,7 +43,7 @@ class EstudiosController
                     self::validarDatos($data, 'insert');
                     Estudio::crear($data['nombre']);
 
-                    header('Location: /Videoteca_ElResplandor/estudios?msg=insertado');
+                    header('Location: ' . BASE_PATH . '/estudios?msg=insertado');
                     break;
 
                 case 'update':
@@ -55,7 +55,7 @@ class EstudiosController
                     self::validarDatos($data, 'update');
                     Estudio::actualizar($data['id'], $data['nombre']);
 
-                    header('Location: /Videoteca_ElResplandor/estudios?msg=actualizado');
+                    header('Location: ' . BASE_PATH . '/estudios?msg=actualizado');
                     break;
 
                 case 'delete':
@@ -66,7 +66,7 @@ class EstudiosController
                     self::validarDatos($data, 'delete');
                     Estudio::eliminar($data['id']);
 
-                    header('Location: /Videoteca_ElResplandor/estudios?msg=eliminado');
+                    header('Location: ' . BASE_PATH . '/estudios?msg=eliminado');
                     break;
 
                 default:
@@ -76,7 +76,7 @@ class EstudiosController
         } catch (Exception $e) {
             error_log($e->getMessage());
             header(
-                'Location: /Videoteca_ElResplandor/estudios?msg=error_campos&detalle=' .
+                'Location: ' . BASE_PATH . '/estudios?msg=error_campos&detalle=' .
                 urlencode($e->getMessage())
             );
         }

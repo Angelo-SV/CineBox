@@ -2,7 +2,7 @@
   <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
     <!-- Información -->
     <div class="d-flex align-items-center mb-2 mb-md-0">
-      <a href="/Videoteca_ElResplandor/" class="me-2 text-decoration-none">
+      <a href="<?= BASE_PATH ?>/" class="me-2 text-decoration-none">
         <img src="https://firebasestorage.googleapis.com/v0/b/videotecacinebox.firebasestorage.app/o/Logos%2FcineBox_logo2.png?alt=media&token=35eb8a1f-fc5f-487d-999d-4daa96160773" 
         width="30" height="20" alt="CineBox Logo">
       </a>

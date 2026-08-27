@@ -6,6 +6,7 @@ $contenido = $contenido ?? '<p>Bienvenido a CineBox</p>';
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <script>window.BASE_PATH = "<?= BASE_PATH ?>";</script>
     <title>Administror - CineBox</title>
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -72,17 +73,17 @@ $contenido = $contenido ?? '<p>Bienvenido a CineBox</p>';
     <!-- NAVBAR SUPERIOR -->
     <header class="navbar navbar-dark bg-dark fixed-top shadow-sm">
         <div class="container-fluid">
-            <a href="/Videoteca_ElResplandor/" class="navbar-brand d-flex align-items-center">
+            <a href="<?= BASE_PATH ?>/" class="navbar-brand d-flex align-items-center">
             <img src="https://firebasestorage.googleapis.com/v0/b/videotecacinebox.firebasestorage.app/o/Logos%2FcineBox_logo3.png?alt=media&token=31ad1239-a16d-46cc-a1a2-ffd773a17a6a" 
         width="240" height="60" alt="CineBox Logo">
                 <span class="ms-2">Panel de Administración</span>
             </a>
             <div class="d-flex">
-            <a href="/Videoteca_ElResplandor/perfil" class="btn btn-outline-light me-2">
+            <a href="<?= BASE_PATH ?>/perfil" class="btn btn-outline-light me-2">
                     <i class="bi bi-person-circle"></i>
                     Mi Perfil
                   </a>
-                  <a href="/Videoteca_ElResplandor/auth/logout" class="btn btn-warning">
+                  <a href="<?= BASE_PATH ?>/auth/logout" class="btn btn-warning">
                     <i class="bi bi-box-arrow-right"></i>
                     Cerrar Sesión
                   </a>
@@ -92,15 +93,15 @@ $contenido = $contenido ?? '<p>Bienvenido a CineBox</p>';
     <!-- SIDEBAR -->
     <aside class="sidebar shadow">
         <h5 class="text-center text-warning mb-4">Administración</h5>
-        <a href="/Videoteca_ElResplandor/admin" class="active"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
-        <a href="/Videoteca_ElResplandor/peliculas"><i class="bi bi-film me-2"></i>Películas</a>
-        <a href="/Videoteca_ElResplandor/generos"><i class="bi bi-tags me-2"></i>Géneros</a>
-        <a href="/Videoteca_ElResplandor/actores"><i class="bi bi-people-fill me-2"></i>Actores</a>
-        <a href="/Videoteca_ElResplandor/directores"><i class="bi bi-person-video3 me-2"></i>Directores</a>
-        <a href="/Videoteca_ElResplandor/estudios"><i class="bi bi-building me-2"></i>Estudios</a>
-        <a href="/Videoteca_ElResplandor/proveedores"><i class="bi bi-truck me-2"></i>Proveedores</a>
+        <a href="<?= BASE_PATH ?>/admin" class="active"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
+        <a href="<?= BASE_PATH ?>/peliculas"><i class="bi bi-film me-2"></i>Películas</a>
+        <a href="<?= BASE_PATH ?>/generos"><i class="bi bi-tags me-2"></i>Géneros</a>
+        <a href="<?= BASE_PATH ?>/actores"><i class="bi bi-people-fill me-2"></i>Actores</a>
+        <a href="<?= BASE_PATH ?>/directores"><i class="bi bi-person-video3 me-2"></i>Directores</a>
+        <a href="<?= BASE_PATH ?>/estudios"><i class="bi bi-building me-2"></i>Estudios</a>
+        <a href="<?= BASE_PATH ?>/proveedores"><i class="bi bi-truck me-2"></i>Proveedores</a>
         <hr class="text-secondary">
-        <a href="/Videoteca_ElResplandor/usuarios"><i class="bi bi-person-lines-fill me-2"></i>Usuarios</a>
+        <a href="<?= BASE_PATH ?>/usuarios"><i class="bi bi-person-lines-fill me-2"></i>Usuarios</a>
     </aside>
     <!-- CONTENIDO PRINCIPAL -->
     <div class="d-flex flex-column min-vh-100">

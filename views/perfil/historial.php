@@ -10,7 +10,7 @@ ob_start();
         <div class="alert alert-warning bg-dark border-warning text-light">
             Aún no has alquilado películas.
         </div>
-        <a href="/Videoteca_ElResplandor/catalogo" class="btn btn-warning">
+        <a href="<?= BASE_PATH ?>/catalogo" class="btn btn-warning">
             <i class="bi bi-film"></i> Ir al catálogo
         </a>
     <?php else: ?>
@@ -47,7 +47,7 @@ ob_start();
                     </td>
                     <td>
                         <?php if ($p['ES_ALQUILADA'] == 1): ?>
-                            <a href="/Videoteca_ElResplandor/ver/<?= $p['ID_TRANSACCION_ACTIVA'] ?>"
+                            <a href="<?= BASE_PATH ?>/ver/<?= $p['ID_TRANSACCION_ACTIVA'] ?>"
                             class="btn btn-warning btn-sm">
                             <i class="bi bi-play-fill me-1"></i>Ver ahora
                             </a>
@@ -207,7 +207,7 @@ ob_start();
 
       <div class="modal-footer border-warning justify-content-center">
 
-        <a href="/Videoteca_ElResplandor/perfil/biblioteca"
+        <a href="<?= BASE_PATH ?>/perfil/biblioteca"
            class="btn btn-warning">
            Ir a mi biblioteca
         </a>
@@ -261,7 +261,7 @@ ob_start();
     </div>
   </div>
 </div>
-<script src="/Videoteca_ElResplandor/js/historial.js"></script>
+<script src="<?= BASE_PATH ?>/js/historial.js"></script>
 <?php
 $contenido = ob_get_clean();
 include __DIR__ . '/../layouts/layout_perfil.php';

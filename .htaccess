@@ -5,8 +5,8 @@
 
 RewriteEngine On
 
-# Base del proyecto
-RewriteBase /Videoteca_ElResplandor/
+# RewriteBase se detecta automáticamente a partir del directorio donde vive
+# este .htaccess (funciona igual en una subcarpeta local o en la raíz del dominio).
 
 # No reescribir archivos reales
 RewriteCond %{REQUEST_FILENAME} !-f

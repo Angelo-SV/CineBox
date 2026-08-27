@@ -5,12 +5,16 @@ require_once __DIR__ . '/../models/Usuario.php';
 /* la acción viene determinada por la RUTA, no por ?action */
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri = trim($uri, '/');
+$basePath = trim(BASE_PATH, '/');
+if ($basePath !== '' && str_starts_with($uri, $basePath)) {
+    $uri = trim(substr($uri, strlen($basePath)), '/');
+}
 
 /* LOGIN */
-if ($uri === 'Videoteca_ElResplandor/auth/login') {
+if ($uri === 'auth/login') {
 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        header("Location: /Videoteca_ElResplandor/login");
+        header("Location: " . BASE_PATH . "/login");
         exit;
     }
 
@@ -18,7 +22,7 @@ if ($uri === 'Videoteca_ElResplandor/auth/login') {
     $pass   = $_POST['contrasena'] ?? '';
 
     if ($correo === '' || $pass === '') {
-        header("Location: /Videoteca_ElResplandor/login?msg=error_campos");
+        header("Location: " . BASE_PATH . "/login?msg=error_campos");
         exit;
     }
 
@@ -26,12 +30,12 @@ if ($uri === 'Videoteca_ElResplandor/auth/login') {
         $user = Usuario::obtenerPorCorreo($correo);
 
         if (!$user) {
-            header("Location: /Videoteca_ElResplandor/login?msg=correoInvalido");
+            header("Location: " . BASE_PATH . "/login?msg=correoInvalido");
             exit;
         }
 
         if (!password_verify($pass, $user['CONTRASENA'])) {
-            header("Location: /Videoteca_ElResplandor/login?msg=contrasena");
+            header("Location: " . BASE_PATH . "/login?msg=contrasena");
             exit;
         }
 
@@ -45,18 +49,18 @@ if ($uri === 'Videoteca_ElResplandor/auth/login') {
             ($user['APELLIDO_MATERNO'] ?? '')
         );
 
-        header("Location: /Videoteca_ElResplandor/");
+        header("Location: " . BASE_PATH . "/");
         exit;
 
     } catch (Exception $e) {
         error_log($e->getMessage());
-        header("Location: /Videoteca_ElResplandor/login?msg=errorDB");
+        header("Location: " . BASE_PATH . "/login?msg=errorDB");
         exit;
     }
 }
 
 /* LOGOUT */
-if ($uri === 'Videoteca_ElResplandor/auth/logout') {
+if ($uri === 'auth/logout') {
 
     session_unset();
     session_destroy();
@@ -64,6 +68,6 @@ if ($uri === 'Videoteca_ElResplandor/auth/logout') {
     header("Cache-Control: no-store, no-cache, must-revalidate");
     header("Pragma: no-cache");
 
-    header("Location: /Videoteca_ElResplandor/login");
+    header("Location: " . BASE_PATH . "/login");
     exit;
 }

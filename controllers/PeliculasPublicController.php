@@ -17,7 +17,7 @@ class PeliculasPublicController
 
         } catch (Exception $e) {
             error_log($e->getMessage());
-            header("Location: /Videoteca_ElResplandor/index?msg=error_bd");
+            header("Location: " . BASE_PATH . "/index?msg=error_bd");
             exit;
         }
     }
@@ -90,7 +90,7 @@ class PeliculasPublicController
         $id = intval($_GET['id'] ?? 0);
     
         if ($id <= 0) {
-            header('Location: /Videoteca_ElResplandor/');
+            header('Location: ' . BASE_PATH . '/');
             exit;
         }
     
@@ -98,7 +98,7 @@ class PeliculasPublicController
             $pelicula = Pelicula::obtenerDetallePublico($id, $idUsuario);
     
             if (!$pelicula) {
-                header('Location: /Videoteca_ElResplandor/');
+                header('Location: ' . BASE_PATH . '/');
                 exit;
             }
     
@@ -112,7 +112,7 @@ class PeliculasPublicController
     
         } catch (Exception $e) {
             error_log($e->getMessage());
-            header('Location: /Videoteca_ElResplandor/');
+            header('Location: ' . BASE_PATH . '/');
         }
     
         exit;
