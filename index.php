@@ -12,4 +12,13 @@ error_reporting(E_ALL);
 define('BASE_PATH', rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])), '/'));
 
 session_start();
+
+/* Páginas vistas con sesión iniciada nunca deben quedar en el caché del
+   navegador: sin esto, el botón "atrás" tras cerrar sesión puede mostrar
+   por un instante una copia cacheada de una página con datos del usuario. */
+if (!empty($_SESSION['id'])) {
+    header('Cache-Control: no-store, no-cache, must-revalidate');
+    header('Pragma: no-cache');
+}
+
 require_once __DIR__ . '/routes/web.php';
