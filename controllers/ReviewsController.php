@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../models/Review.php';
+require_once __DIR__ . '/../config/Database.php';
 
 class ReviewsController {
 
@@ -13,6 +14,7 @@ class ReviewsController {
             exit;
         }      
 
+        $conn = null;
         try {
             $usuario  = $_SESSION['id'];
             $pelicula = intval($_POST['pelicula']);
@@ -23,15 +25,17 @@ class ReviewsController {
                 throw new Exception("Calificación inválida");
             }
 
-            if (Review::usuarioYaComento($_SESSION['id'],$pelicula)) {
+            $conn = conectaOracle();
+
+            if (Review::usuarioYaComento($_SESSION['id'], $pelicula, $conn)) {
                 echo json_encode([
                     'ok'=>false,
                     'msg'=>'Ya enviaste un review para esta película'
                 ]);
                 exit;
-            }  
+            }
 
-            Review::insertar($usuario, $pelicula, $calif, $coment);
+            Review::insertar($usuario, $pelicula, $calif, $coment, $conn);
 
             echo json_encode(['ok'=>true]);
 
@@ -40,6 +44,8 @@ class ReviewsController {
                 'ok'=>false,
                 'msg'=>$e->getMessage()
             ]);
+        } finally {
+            if ($conn) oci_close($conn);
         }
 
         exit;

@@ -5,6 +5,8 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../models/Usuario.php';
+require_once __DIR__ . '/../models/Transaccion.php';
+require_once __DIR__ . '/../models/Perfil.php';
 require_once __DIR__ . '/../middleware/admin.php';
 
 $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
@@ -25,7 +27,31 @@ if ($basePath !== '' && str_starts_with($uri, $basePath)) {
     }
 
     $usuarios = Usuario::listar(); // 👈 viene del modelo
+    $alquileresActivosPorUsuario = Transaccion::contarActivosPorUsuario();
     require __DIR__ . '/../views/admin/usuarios.php';
+    exit;
+}
+
+/* ===============================
+   ALQUILERES ACTIVOS DE UN USUARIO (AJAX, para el modal)
+   =============================== */
+if ($uri === 'usuarios/alquileres') {
+    requireAdmin();
+    header('Content-Type: application/json');
+
+    $id = intval($_GET['id'] ?? 0);
+    if ($id <= 0) {
+        echo json_encode(['ok' => false]);
+        exit;
+    }
+
+    try {
+        $peliculas = Perfil::obtenerBiblioteca($id);
+        echo json_encode(['ok' => true, 'peliculas' => $peliculas]);
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode(['ok' => false]);
+    }
     exit;
 }
 

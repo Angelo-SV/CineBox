@@ -68,7 +68,8 @@ if (session_status() === PHP_SESSION_NONE) {
 document.addEventListener("DOMContentLoaded", function () {
     const cartCount = document.getElementById("cart-count");
     if (!cartCount) return;
-    function actualizarCantidad() {
+    function actualizarCantidad(intento) {
+        intento = intento || 0;
         fetch("<?= BASE_PATH ?>/carrito/cantidad")
         .then(res => res.json())
         .then(data => {
@@ -80,9 +81,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else {
                     cartCount.style.display = "inline-block";
                 }
+            } else if (intento < 2) {
+                /* Reintento con retraso creciente + aleatorio: esta llamada
+                   compite por conexión a la base de datos con la carga del
+                   catálogo y de los filtros justo al abrir la página. */
+                setTimeout(function () { actualizarCantidad(intento + 1); }, 500 + intento * 600 + Math.random() * 700);
+            }
+        })
+        .catch(function () {
+            if (intento < 2) {
+                setTimeout(function () { actualizarCantidad(intento + 1); }, 500 + intento * 600 + Math.random() * 700);
             }
         });
     }
-    actualizarCantidad();
+    /* Retraso corto: es la tercera llamada que sale al abrir la página
+       (después del catálogo y los filtros) y es la menos urgente
+       visualmente (solo la burbuja del carrito), así que se escalona para
+       no competir por conexión con las otras dos. */
+    setTimeout(function () { actualizarCantidad(); }, 300);
 });
 </script>

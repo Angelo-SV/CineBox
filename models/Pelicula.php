@@ -6,9 +6,9 @@ class Pelicula {
     /* ===============================
        LISTAR
        =============================== */
-    public static function listar() {
+    public static function listar($conexion = null) {
 
-        $c = conectaOracle();
+        $c = $conexion ?? conectaOracle();
         $stmt = oci_parse($c, "BEGIN CONSULTAR_PELICULAS(:cursor); END;");
         $cur  = oci_new_cursor($c);
 
@@ -16,13 +16,13 @@ class Pelicula {
 
         if (!oci_execute($stmt)) {
             $e = oci_error($stmt);
-            oci_close($c);
+            if (!$conexion) oci_close($c);
             throw new Exception($e['message']);
         }
 
         if (!oci_execute($cur)) {
             $e = oci_error($cur);
-            oci_close($c);
+            if (!$conexion) oci_close($c);
             throw new Exception($e['message']);
         }
 
@@ -31,7 +31,7 @@ class Pelicula {
             $data[] = $row;
         }
 
-        oci_close($c);
+        if (!$conexion) oci_close($c);
         return $data;
     }
 
@@ -199,30 +199,30 @@ class Pelicula {
    /* ===============================
       DETALLE PÚBLICO (FUTURO)
       =============================== */
-      public static function obtenerDetallePublico($id, $usuarioId = 0)
+      public static function obtenerDetallePublico($id, $usuarioId = 0, $conexion = null)
       {
-          $c = conectaOracle();
-      
+          $c = $conexion ?? conectaOracle();
+
           $sql = "BEGIN CONSULTAR_PELICULA_DETALLE(:id, :usr, :cursor); END;";
           $stmt = oci_parse($c, $sql);
           $cur  = oci_new_cursor($c);
-      
+
           oci_bind_by_name($stmt, ":id", $id);
           oci_bind_by_name($stmt, ":usr", $usuarioId);
           oci_bind_by_name($stmt, ":cursor", $cur, -1, OCI_B_CURSOR);
-      
+
           oci_execute($stmt);
           oci_execute($cur);
-      
-          $row = oci_fetch_assoc($cur);
-      
-          oci_close($c);
-          return $row ?: null;
-      }        
 
-   public static function obtenerCastPublico($id)
+          $row = oci_fetch_assoc($cur);
+
+          if (!$conexion) oci_close($c);
+          return $row ?: null;
+      }
+
+   public static function obtenerCastPublico($id, $conexion = null)
     {
-        $c = conectaOracle();
+        $c = $conexion ?? conectaOracle();
 
         $sql = "BEGIN CONSULTAR_CAST_PELICULA(:id, :cursor); END;";
         $stmt = oci_parse($c, $sql);
@@ -239,7 +239,7 @@ class Pelicula {
             $data[] = $row;
         }
 
-        oci_close($c);
+        if (!$conexion) oci_close($c);
         return $data;
     }
 
@@ -283,9 +283,9 @@ class Pelicula {
     /* ===============================
    OBTENER POR ID (ligero)
    =============================== */
-    public static function obtenerPorId($id)
+    public static function obtenerPorId($id, $conexion = null)
     {
-        $c = conectaOracle();
+        $c = $conexion ?? conectaOracle();
 
         $sql = "SELECT ID_PELICULA, TITULO, PRECIO
                 FROM PELICULAS
@@ -296,13 +296,13 @@ class Pelicula {
 
         if (!oci_execute($stmt)) {
             $e = oci_error($stmt);
-            oci_close($c);
+            if (!$conexion) oci_close($c);
             throw new Exception($e['message']);
         }
 
         $row = oci_fetch_assoc($stmt);
 
-        oci_close($c);
+        if (!$conexion) oci_close($c);
 
         return $row ?: null;
     }

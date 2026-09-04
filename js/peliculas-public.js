@@ -5,13 +5,17 @@
    y alquiler-modal.js (abrirModalAlquiler y el resto del flujo de alquiler).
    ========================================= */
 document.addEventListener('DOMContentLoaded', () => {
-    cargarFiltros();
+    /* cargarPeliculas() va primero (es lo más importante, sobre el pliegue)
+       y cargarFiltros() con un pequeño retraso: si salen exactamente al
+       mismo tiempo compiten por conexión a la base de datos con la llamada
+       del contador del carrito (navbar.php) y suben la probabilidad de que
+       alguna falle en el primer intento. */
     cargarPeliculas();
+    setTimeout(cargarFiltros, 150);
     const buscador = document.getElementById('buscadorTitulo');
     if (buscador) {
         buscador.addEventListener('input', debounce(() => {
-            paginaActual = 1;
-            cargarPeliculas();
+            aplicarFiltros();
         }, 400));
     }
 });
@@ -27,6 +31,16 @@ function debounce(fn, delay) {
         clearTimeout(t);
         t = setTimeout(() => fn(...args), delay);
     };
+}
+/* La base de datos Always Free a veces tarda o falla en una conexión
+   (arranque en frío / límite de conexiones concurrentes: en una sola carga
+   de página se abren varias conexiones a la vez — filtros, catálogo,
+   contador del carrito). Un retraso fijo hace que todos los reintentos
+   caigan otra vez juntos y choquen con el mismo límite; por eso el retraso
+   crece con el número de intento y lleva un poco de aleatoriedad (jitter)
+   para desincronizarlos entre sí. */
+function retrasoReintento(intento) {
+    return 500 + intento * 600 + Math.random() * 700;
 }
 /* ===============================
    LOADER
@@ -154,8 +168,8 @@ function toggleCarrito(idPelicula, boton) {
 /* ===============================
    CARGAR PELÍCULAS
    =============================== */
-function cargarPeliculas() {
-    mostrarSkeletons();
+function cargarPeliculas(intento = 0) {
+    if (intento === 0) mostrarSkeletons();
     const generoSelect = document.getElementById('filtroGenero');
     const estudioSelect = document.getElementById('filtroEstudio');
     const buscador = document.getElementById('buscadorTitulo');
@@ -177,12 +191,17 @@ function cargarPeliculas() {
             `&solo_carrito=${soloCarrito}`)
         .then(r => r.json())
         .then(data => {
+            if (!data.ok) throw new Error(data.msg || 'Error cargando películas');
             renderPeliculas(data.peliculas, texto);
             renderPaginacion(data.total);
         })
         .catch(err => {
             console.error(err);
-            mostrarError('Error cargando películas');
+            if (intento < 2) {
+                setTimeout(() => cargarPeliculas(intento + 1), retrasoReintento(intento));
+            } else {
+                mostrarError('Error cargando películas. Intenta recargar la página.');
+            }
         });
 }
 /* ===============================
@@ -192,9 +211,17 @@ function renderPeliculas(peliculas, textoBusqueda = '') {
     const contenedor = document.getElementById('contenedorPeliculas');
     contenedor.innerHTML = '';
     if (!peliculas || peliculas.length === 0) {
+        const mensaje = textoBusqueda
+            ? `No encontramos películas que coincidan con "<strong>${textoBusqueda}</strong>"`
+            : 'No encontramos películas con estos filtros';
         contenedor.innerHTML = `
-            <div class="col-12 text-center text-light">
-                No hay coincidencias para: "<strong>${textoBusqueda}</strong>"
+            <div class="col-12 estado-vacio-catalogo text-center text-light py-5">
+                <i class="bi bi-emoji-frown display-4 text-warning d-block mb-3"></i>
+                <p class="fs-5 mb-1">${mensaje}</p>
+                <p class="text-hint small mb-3">Prueba con otro término o ajusta los filtros seleccionados</p>
+                <button type="button" class="btn btn-outline-warning btn-sm" onclick="limpiarFiltros()">
+                    <i class="bi bi-x-circle"></i> Limpiar filtros
+                </button>
             </div>`;
         return;
     }
@@ -312,7 +339,46 @@ function cambiarPagina(pagina) {
    =============================== */
 function aplicarFiltros() {
     paginaActual = 1;
+    actualizarVisibilidadLimpiar();
     cargarPeliculas();
+}
+function limpiarFiltros() {
+    const buscador = document.getElementById('buscadorTitulo');
+    const generoSelect = document.getElementById('filtroGenero');
+    const estudioSelect = document.getElementById('filtroEstudio');
+    const switchLista = document.getElementById('switchMiLista');
+    const switchAlquiladas = document.getElementById('switchAlquiladas');
+    const switchCarrito = document.getElementById('switchCarrito');
+    if (buscador) buscador.value = '';
+    if (generoSelect) generoSelect.value = '0';
+    if (estudioSelect) estudioSelect.value = '0';
+    if (switchLista) switchLista.checked = false;
+    if (switchAlquiladas) switchAlquiladas.checked = false;
+    if (switchCarrito) switchCarrito.checked = false;
+    aplicarFiltros();
+}
+/* ===============================
+   MOSTRAR/OCULTAR "LIMPIAR FILTROS"
+   Solo visible si hay al menos un filtro activo.
+   =============================== */
+function hayFiltrosActivos() {
+    const buscador = document.getElementById('buscadorTitulo');
+    const generoSelect = document.getElementById('filtroGenero');
+    const estudioSelect = document.getElementById('filtroEstudio');
+    const switchLista = document.getElementById('switchMiLista');
+    const switchAlquiladas = document.getElementById('switchAlquiladas');
+    const switchCarrito = document.getElementById('switchCarrito');
+    return (buscador && buscador.value.trim() !== '') ||
+        (generoSelect && generoSelect.value !== '0') ||
+        (estudioSelect && estudioSelect.value !== '0') ||
+        (switchLista && switchLista.checked) ||
+        (switchAlquiladas && switchAlquiladas.checked) ||
+        (switchCarrito && switchCarrito.checked);
+}
+function actualizarVisibilidadLimpiar() {
+    const btn = document.getElementById('btnLimpiarFiltros');
+    if (!btn) return;
+    btn.classList.toggle('d-none', !hayFiltrosActivos());
 }
 /* ===============================
    ERROR UI
@@ -324,19 +390,29 @@ function mostrarError(mensaje) {
             ${mensaje}
         </div>`;
 }
-function cargarFiltros() {
+function cargarFiltros(intento = 0) {
+    const genero = document.getElementById('filtroGenero');
+    const estudio = document.getElementById('filtroEstudio');
     fetch(window.BASE_PATH + '/peliculas-filtros')
         .then(r => r.json())
         .then(data => {
-            if (!data.ok) return;
-            const genero = document.getElementById('filtroGenero');
-            const estudio = document.getElementById('filtroEstudio');
+            if (!data.ok) throw new Error(data.msg || 'Error cargando filtros');
+            /* Se limpian antes de repoblar por si esta es la segunda pasada
+               (reintento) y ya se habían agregado opciones previamente. */
+            genero.querySelectorAll('option:not([value="0"])').forEach(o => o.remove());
+            estudio.querySelectorAll('option:not([value="0"])').forEach(o => o.remove());
             data.generos.forEach(g => {
                 genero.innerHTML += `<option value="${g.ID_GENERO}">${g.DESCRIPCION}</option>`;
             });
             data.estudios.forEach(e => {
                 estudio.innerHTML += `<option value="${e.ID_ESTUDIO}">${e.NOMBRE}</option>`;
             });
+        })
+        .catch(err => {
+            console.error(err);
+            if (intento < 2) {
+                setTimeout(() => cargarFiltros(intento + 1), retrasoReintento(intento));
+            }
         });
 }
 /* ===============================

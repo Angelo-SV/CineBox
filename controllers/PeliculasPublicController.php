@@ -4,6 +4,7 @@ require_once __DIR__ . '/../models/Pelicula.php';
 require_once __DIR__ . '/../models/Estudio.php';
 require_once __DIR__ . '/../models/Genero.php';
 require_once __DIR__ . '/../config/constants.php';
+require_once __DIR__ . '/../config/Database.php';
 
 
 class PeliculasPublicController
@@ -94,29 +95,36 @@ class PeliculasPublicController
             exit;
         }
     
+        $conn = null;
         try {
-            $pelicula = Pelicula::obtenerDetallePublico($id, $idUsuario);
-    
+            $conn = conectaOracle();
+
+            $pelicula = Pelicula::obtenerDetallePublico($id, $idUsuario, $conn);
+
             if (!$pelicula) {
                 header('Location: ' . BASE_PATH . '/');
                 exit;
             }
-    
-            $cast = Pelicula::obtenerCastPublico($id);
-            require_once __DIR__ . '/../models/Review.php';
-            $reviews = Review::listarPorPelicula($id);
-            $promedio = Review::promedio($id);
 
-    
+            $cast = Pelicula::obtenerCastPublico($id, $conn);
+            require_once __DIR__ . '/../models/Review.php';
+            $reviews = Review::listarPorPelicula($id, $conn);
+            $promedio = Review::promedio($id, $conn);
+
+            oci_close($conn);
+            $conn = null;
+
             require __DIR__ . '/../views/public/pelicula_detalle.php';
-    
+
         } catch (Exception $e) {
             error_log($e->getMessage());
             header('Location: ' . BASE_PATH . '/');
+        } finally {
+            if ($conn) oci_close($conn);
         }
-    
+
         exit;
-    }       
+    }
 
     /* ===============================
     FILTROS (géneros y estudios)

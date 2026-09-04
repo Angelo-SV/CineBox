@@ -19,7 +19,7 @@ class PerfilController
     public static function biblioteca()
     {
         if (!isset($_SESSION['id'])) {
-            header("Location: /login");
+            header("Location: " . BASE_PATH . "/login");
             exit;
         }
 

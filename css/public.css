@@ -116,9 +116,10 @@ main {
   font-size: 1.1rem;
 }
 
-/* Estado NO favorito */
+/* Estado NO favorito: fondo oscuro semitransparente para que el corazón
+   siga siendo visible incluso sobre carátulas claras. */
 .btn-fav-outline {
-  background: transparent;
+  background: rgba(0, 0, 0, 0.6);
   border: 1px solid #ffc107;
   color: #ffc107;
 }
@@ -259,10 +260,43 @@ main {
 .btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
 }
 .btn-fav {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+/* Bootstrap's .text-muted (#6c757d) apenas contrasta con el fondo oscuro
+   del sitio (#3c3e40) — casi invisible salvo al seleccionar el texto. */
+.text-hint {
+  color: #adb5bd;
+}
+
+/* Estado "sin resultados" del catálogo: el contenedor es un .row con
+   row-cols-md-3 (grid de 3 columnas), cuya regla de ancho (33%) empata en
+   especificidad con .col-12 y a veces gana, dejando el bloque encajado en
+   el primer tercio en vez de centrado en toda la fila. Se fuerza el ancho
+   completo explícitamente. */
+.estado-vacio-catalogo {
+  flex: 0 0 100% !important;
+  max-width: 100% !important;
+  width: 100%;
+}
+
+/* Botón "mostrar/ocultar contraseña" (js/password-toggle.js) */
+.btn-toggle-password {
+  position: absolute;
+  right: 10px;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #adb5bd;
+  padding: 0;
+  line-height: 1;
+  cursor: pointer;
+}
+.btn-toggle-password:hover {
+  color: #ffc107;
 }

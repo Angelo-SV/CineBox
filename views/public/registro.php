@@ -86,3 +86,4 @@ include __DIR__ . '/../layouts/layout.php';
 ?>
 <!-- Archivo JS externo -->
 <script src="js/registro.js"></script>
+<script src="js/password-toggle.js"></script>

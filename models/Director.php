@@ -6,8 +6,8 @@ class Director {
     /* ===============================
        OBTENER TODOS
        =============================== */
-    public static function obtenerTodos() {
-        $c = conectaOracle();
+    public static function obtenerTodos($conexion = null) {
+        $c = $conexion ?? conectaOracle();
 
         $sql = "BEGIN CONSULTAR_DIRECTORES(:cursor); END;";
         $stmt = oci_parse($c, $sql);
@@ -24,7 +24,7 @@ class Director {
         }
 
         oci_free_statement($stmt);
-        oci_close($c);
+        if (!$conexion) oci_close($c);
 
         return $directores;
     }

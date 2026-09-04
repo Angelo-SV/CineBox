@@ -7,7 +7,8 @@ $contenido = $contenido ?? '<p>Bienvenido a CineBox</p>';
 <head>
     <meta charset="UTF-8">
     <script>window.BASE_PATH = "<?= BASE_PATH ?>";</script>
-    <title>Administror - CineBox</title>
+    <title>Administrador - CineBox</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23212529'/%3E%3Ccircle cx='32' cy='32' r='24' fill='%23ffc107'/%3E%3Cpath d='M26 20L46 32L26 44Z' fill='%23212529'/%3E%3C/svg%3E">
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -22,11 +23,13 @@ $contenido = $contenido ?? '<p>Bienvenido a CineBox</p>';
     <!-- NAVBAR SUPERIOR -->
     <header class="navbar navbar-dark bg-dark fixed-top shadow-sm">
         <div class="container-fluid">
-            <a href="<?= BASE_PATH ?>/" class="navbar-brand d-flex align-items-center">
-            <img src="https://firebasestorage.googleapis.com/v0/b/videotecacinebox.firebasestorage.app/o/Logos%2FcineBox_logo3.png?alt=media&token=31ad1239-a16d-46cc-a1a2-ffd773a17a6a" 
+            <span class="navbar-brand d-flex align-items-center mb-0">
+            <a href="<?= BASE_PATH ?>/" class="d-flex align-items-center">
+            <img src="https://firebasestorage.googleapis.com/v0/b/videotecacinebox.firebasestorage.app/o/Logos%2FcineBox_logo3.png?alt=media&token=31ad1239-a16d-46cc-a1a2-ffd773a17a6a"
         width="240" height="60" alt="CineBox Logo">
-                <span class="ms-2">Panel de Administración</span>
             </a>
+                <span class="ms-2">Panel de Administración</span>
+            </span>
             <div class="d-flex">
             <a href="<?= BASE_PATH ?>/perfil" class="btn btn-outline-light me-2">
                     <i class="bi bi-person-circle"></i>
@@ -82,5 +85,16 @@ $contenido = $contenido ?? '<p>Bienvenido a CineBox</p>';
     <!-- DataTables Responsive -->
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+    <script>
+    /* Si esta página se restaura desde el caché de "atrás/adelante" del
+       navegador (bfcache) tras cerrar sesión, se fuerza una recarga real
+       para que el servidor vuelva a validar la sesión (ya destruida) y
+       redirija a login en vez de mostrar la última vista cacheada. */
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
+    </script>
 </body>
 </html>

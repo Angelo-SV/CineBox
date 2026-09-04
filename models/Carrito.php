@@ -2,12 +2,20 @@
 require_once __DIR__ . '/../config/Database.php';
 class Carrito
 {
+    /* Cada método acepta una conexión ya abierta como último parámetro
+       opcional. Si no se pasa ninguna, el método abre y cierra la suya
+       propia (comportamiento de antes, sin cambios para quien ya lo usa
+       así). Esto permite que un flujo que hace varias operaciones seguidas
+       (como el toggle de agregar/quitar del carrito) las haga todas sobre
+       una sola conexión en vez de abrir una conexión nueva —con su propio
+       handshake contra el Wallet— por cada llamada. */
+
     /* ===============================
        AGREGAR ITEM
        =============================== */
-    public static function agregar($idUsuario, $idPelicula)
+    public static function agregar($idUsuario, $idPelicula, $conexion = null)
     {
-        $c = conectaOracle();
+        $c = $conexion ?? conectaOracle();
 
         $sql = "BEGIN SP_CARRITO_AGREGAR_ITEM(:u, :p); END;";
         $stmt = oci_parse($c, $sql);
@@ -17,16 +25,16 @@ class Carrito
 
         $ok = oci_execute($stmt);
 
-        oci_close($c);
+        if (!$conexion) oci_close($c);
         return $ok;
     }
 
     /* ===============================
        ELIMINAR ITEM
        =============================== */
-    public static function eliminar($idUsuario, $idPelicula)
+    public static function eliminar($idUsuario, $idPelicula, $conexion = null)
     {
-        $c = conectaOracle();
+        $c = $conexion ?? conectaOracle();
 
         $sql = "BEGIN SP_CARRITO_ELIMINAR_ITEM(:u, :p); END;";
         $stmt = oci_parse($c, $sql);
@@ -36,16 +44,16 @@ class Carrito
 
         $ok = oci_execute($stmt);
 
-        oci_close($c);
+        if (!$conexion) oci_close($c);
         return $ok;
     }
 
     /* ===============================
        LISTAR CARRITO
        =============================== */
-    public static function listar($idUsuario)
+    public static function listar($idUsuario, $conexion = null)
     {
-        $c = conectaOracle();
+        $c = $conexion ?? conectaOracle();
 
         $sql = "BEGIN SP_CARRITO_LISTAR(:u, :cur); END;";
         $stmt = oci_parse($c, $sql);
@@ -63,16 +71,16 @@ class Carrito
             $data[] = $row;
         }
 
-        oci_close($c);
+        if (!$conexion) oci_close($c);
         return $data;
     }
 
     /* ===============================
        TOTAL CARRITO
        =============================== */
-    public static function total($idUsuario)
+    public static function total($idUsuario, $conexion = null)
     {
-        $c = conectaOracle();
+        $c = $conexion ?? conectaOracle();
 
         $sql = "BEGIN SP_CARRITO_TOTAL(:u, :t); END;";
         $stmt = oci_parse($c, $sql);
@@ -82,16 +90,16 @@ class Carrito
 
         oci_execute($stmt);
 
-        oci_close($c);
+        if (!$conexion) oci_close($c);
         return floatval($total);
     }
 
     /* ===============================
        VACIAR
        =============================== */
-    public static function vaciar($idUsuario)
+    public static function vaciar($idUsuario, $conexion = null)
     {
-        $c = conectaOracle();
+        $c = $conexion ?? conectaOracle();
 
         $sql = "BEGIN SP_CARRITO_VACIAR(:u); END;";
         $stmt = oci_parse($c, $sql);
@@ -100,16 +108,16 @@ class Carrito
 
         $ok = oci_execute($stmt);
 
-        oci_close($c);
+        if (!$conexion) oci_close($c);
         return $ok;
     }
 
     /* ===============================
        CERRAR CARRITO
        =============================== */
-    public static function cerrar($idUsuario)
+    public static function cerrar($idUsuario, $conexion = null)
     {
-        $c = conectaOracle();
+        $c = $conexion ?? conectaOracle();
 
         $sql = "BEGIN SP_CARRITO_CERRAR(:u); END;";
         $stmt = oci_parse($c, $sql);
@@ -118,7 +126,7 @@ class Carrito
 
         $ok = oci_execute($stmt);
 
-        oci_close($c);
+        if (!$conexion) oci_close($c);
         return $ok;
     }
 }

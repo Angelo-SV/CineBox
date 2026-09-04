@@ -9,10 +9,20 @@ function conectaOracle() {
     // Alias TNS definido en el tnsnames.ora del Wallet
     $database = env('DB_DATABASE');
 
-    $c = oci_connect($username, $password, $database);
+    /* AL32UTF8 explícito: sin esto, OCI8 usa el NLS_LANG del entorno del
+       servidor (a menudo ASCII), y cualquier acento o ñ llega convertido en
+       "?" en vez de mostrarse correctamente. */
+    $c = oci_connect($username, $password, $database, 'AL32UTF8');
     if (!$c) {
         $m = oci_error();
-        trigger_error('No se pudo conectar a la base de datos: ' . $m['message'], E_USER_ERROR);
+        /* Excepción real (no trigger_error con E_USER_ERROR): ese nivel de
+           error es fatal y NO es capturable con try/catch, así que cualquier
+           endpoint que responde JSON (ej. peliculas-publicas) terminaba
+           devolviendo un volcado HTML de error en vez de JSON válido, y
+           fetch().then(r => r.json()) truena en el navegador. Con una
+           excepción normal, el try/catch de cada controlador puede
+           responder un JSON de error limpio. */
+        throw new Exception('No se pudo conectar a la base de datos: ' . $m['message']);
     }
     return $c;
 }
@@ -23,12 +33,12 @@ function consultaOracle($query) {
     $s = oci_parse($conexion, $query);
     if (!$s) {
         $e = oci_error($conexion);
-        trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+        throw new Exception(htmlentities($e['message'], ENT_QUOTES));
     }
     $r = oci_execute($s);
     if (!$r) {
         $e = oci_error($s);
-        trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+        throw new Exception(htmlentities($e['message'], ENT_QUOTES));
     }
     return $s; // retornamos el statement para poder fetch
 }
@@ -39,12 +49,12 @@ function insertaOracle($iquery) {
     $s = oci_parse($conexion, $iquery);
     if (!$s) {
         $e = oci_error($conexion);
-        trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+        throw new Exception(htmlentities($e['message'], ENT_QUOTES));
     }
     $r = oci_execute($s, OCI_NO_AUTO_COMMIT);
     if (!$r) {
         $e = oci_error($s);
-        trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+        throw new Exception(htmlentities($e['message'], ENT_QUOTES));
     }
     oci_commit($conexion);
     oci_free_statement($s);

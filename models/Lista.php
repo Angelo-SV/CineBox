@@ -17,6 +17,8 @@ class Lista {
 
         oci_execute($stmt);
 
+        oci_close($db);
+
         return $favorito == 1;
     }
 

@@ -72,6 +72,7 @@ ob_start();
                 </td>
                 <td><?= (new DateTime($row['FECHA_REGISTRO']))->format('d/m/Y') ?></td>
                 <td>
+                <?php $alquileresActivos = $alquileresActivosPorUsuario[(int) $row['ID_USUARIO']] ?? 0; ?>
                 <button class="btn btn-warning btn-sm btnEditar"
                     data-id="<?= $row['ID_USUARIO'] ?>"
                     data-nombre="<?= htmlspecialchars($row['NOMBRE']) ?>"
@@ -83,6 +84,16 @@ ob_start();
                     data-bs-toggle="modal"
                     data-bs-target="#modalEditar">
                     <i class="bi bi-pencil-square"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-warning btnVerAlquileres"
+                        data-id="<?= $row['ID_USUARIO'] ?>"
+                        data-nombre="<?= htmlspecialchars($row['NOMBRE'] . ' ' . $row['APELLIDO_PATERNO']) ?>"
+                        title="<?= $alquileresActivos > 0 ? 'Ver alquileres activos' : 'Sin alquileres activos' ?>"
+                        <?= $alquileresActivos > 0 ? '' : 'disabled' ?>>
+                    <i class="bi bi-ticket-perforated-fill"></i>
+                    <?php if ($alquileresActivos > 0): ?>
+                        <span class="badge bg-dark text-warning ms-1"><?= $alquileresActivos ?></span>
+                    <?php endif; ?>
                 </button>
                 <button class="btn btn-sm btn-danger"
                         onclick="eliminarUsuario(
@@ -256,9 +267,45 @@ ob_start();
         </form>
     </div>
 </div>
+<!-- MODAL ALQUILERES ACTIVOS -->
+<div class="modal fade" id="modalAlquileresUsuario">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header">
+                <h5 class="modal-title text-warning">
+                    <i class="bi bi-ticket-perforated-fill"></i>
+                    Alquileres activos de <span id="alqUsuarioNombre"></span>
+                </h5>
+                <button type="button" class="btn-close bg-light" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="alqUsuarioLoader" class="text-center py-4">
+                    <div class="spinner-border text-warning"></div>
+                </div>
+                <div id="alqUsuarioVacio" class="text-center py-4 d-none text-hint">
+                    Este usuario no tiene alquileres activos.
+                </div>
+                <table id="alqUsuarioTabla" class="table table-striped table-dark table-sm d-none">
+                    <thead>
+                        <tr>
+                            <th>Película</th>
+                            <th>Expira</th>
+                            <th>Tiempo restante</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="js/shared.js"></script>
 <script src="js/admin-crud.js"></script>
 <script src="js/usuarios.js"></script>
+<script src="js/password-toggle.js"></script>
 <?php
 $contenido = ob_get_clean();
 include __DIR__ . '/../layouts/layout_admin.php';

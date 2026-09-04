@@ -6,9 +6,9 @@ class Review {
     /* ===============================
        LISTAR POR PELÍCULA
        =============================== */
-    public static function listarPorPelicula($peliculaId) {
+    public static function listarPorPelicula($peliculaId, $conexion = null) {
 
-        $c = conectaOracle();
+        $c = $conexion ?? conectaOracle();
 
         $sql = "BEGIN CONSULTAR_REVIEWS_PELICULA(:id, :cur); END;";
         $stmt = oci_parse($c, $sql);
@@ -25,16 +25,16 @@ class Review {
             $data[] = $row;
         }
 
-        oci_close($c);
+        if (!$conexion) oci_close($c);
         return $data;
     }
 
     /* ===============================
        INSERTAR
        =============================== */
-    public static function insertar($usuario, $pelicula, $calif, $coment) {
+    public static function insertar($usuario, $pelicula, $calif, $coment, $conexion = null) {
 
-        $c = conectaOracle();
+        $c = $conexion ?? conectaOracle();
 
         $sql = "BEGIN INSERTAR_REVIEW(:u,:p,:c,:m); END;";
         $stmt = oci_parse($c, $sql);
@@ -46,15 +46,16 @@ class Review {
 
         if (!oci_execute($stmt)) {
             $e = oci_error($stmt);
+            if (!$conexion) oci_close($c);
             throw new Exception($e['message']);
         }
 
-        oci_close($c);
+        if (!$conexion) oci_close($c);
     }
 
-    public static function promedio($peliculaId)
+    public static function promedio($peliculaId, $conexion = null)
     {
-        $c = conectaOracle();
+        $c = $conexion ?? conectaOracle();
 
         $sql = "BEGIN :res := PROMEDIO_REVIEW_PELICULA(:id); END;";
         $stmt = oci_parse($c,$sql);
@@ -63,14 +64,14 @@ class Review {
         oci_bind_by_name($stmt,":id",$peliculaId);
 
         oci_execute($stmt);
-        oci_close($c);
+        if (!$conexion) oci_close($c);
 
         return floatval($res);
     }
 
-    public static function usuarioYaComento($usuarioId,$peliculaId)
+    public static function usuarioYaComento($usuarioId, $peliculaId, $conexion = null)
     {
-        $c = conectaOracle();
+        $c = $conexion ?? conectaOracle();
 
         $sql = "SELECT COUNT(*) C
                 FROM REVIEWS
@@ -84,7 +85,7 @@ class Review {
         oci_execute($stmt);
         $row = oci_fetch_assoc($stmt);
 
-        oci_close($c);
+        if (!$conexion) oci_close($c);
         return $row['C'] > 0;
     }
 

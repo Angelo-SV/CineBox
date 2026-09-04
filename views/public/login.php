@@ -79,6 +79,7 @@ if (isset($_SESSION['correo'])) {
 </div>
 <!-- Script de validación -->
 <script src="js/login.js"></script>
+<script src="js/password-toggle.js"></script>
 <?php
 $contenido = ob_get_clean();
 include __DIR__ . '/../layouts/layout.php';

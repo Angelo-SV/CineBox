@@ -2,18 +2,21 @@
 
 require_once __DIR__ . '/../models/Carrito.php';
 require_once __DIR__ . '/../models/Transaccion.php';
+require_once __DIR__ . '/../config/Database.php';
 
 class CarritoController
 {
     public static function vista()
     {
         if (empty($_SESSION['id'])) {
-            header("Location: login");
+            header("Location: " . BASE_PATH . "/login");
             exit;
         }
 
-        $items = Carrito::listar($_SESSION['id']);
-        $total = Carrito::total($_SESSION['id']);
+        $conn = conectaOracle();
+        $items = Carrito::listar($_SESSION['id'], $conn);
+        $total = Carrito::total($_SESSION['id'], $conn);
+        oci_close($conn);
 
         require __DIR__ . '/../views/perfil/carrito.php';
     }
@@ -41,10 +44,17 @@ class CarritoController
             exit;
         }
 
+        /* Una sola conexión compartida para las 4 operaciones de este
+           request (antes cada Carrito::listar/agregar/eliminar/total abría
+           y cerraba la suya propia — 4 handshakes contra el Wallet en una
+           sola petición, lo que se sentía como 1-2 segundos de retraso al
+           agregar una película al carrito). */
+        $conn = null;
         try {
+            $conn = conectaOracle();
 
             // 🔍 ver si ya existe en carrito
-            $items = Carrito::listar($idUsuario);
+            $items = Carrito::listar($idUsuario, $conn);
             $existe = false;
 
             foreach ($items as $it) {
@@ -55,14 +65,14 @@ class CarritoController
             }
 
             if ($existe) {
-                Carrito::eliminar($idUsuario, $idPelicula);
+                Carrito::eliminar($idUsuario, $idPelicula, $conn);
             } else {
-                Carrito::agregar($idUsuario, $idPelicula);
+                Carrito::agregar($idUsuario, $idPelicula, $conn);
             }
 
-            $itemsActualizados = Carrito::listar($idUsuario);
+            $itemsActualizados = Carrito::listar($idUsuario, $conn);
             $cantidad = count($itemsActualizados);
-            $total = Carrito::total($idUsuario);
+            $total = Carrito::total($idUsuario, $conn);
 
             echo json_encode([
                 'ok' => true,
@@ -78,6 +88,8 @@ class CarritoController
                 'ok' => false,
                 'msg' => 'Error carrito'
             ]);
+        } finally {
+            if ($conn) oci_close($conn);
         }
         exit;
     }
@@ -135,12 +147,17 @@ class CarritoController
             exit;
         }
 
-        $items = Carrito::listar($_SESSION['id']);
+        try {
+            $items = Carrito::listar($_SESSION['id']);
 
-        echo json_encode([
-            'ok'=>true,
-            'cantidad'=>count($items)
-        ]);
+            echo json_encode([
+                'ok'=>true,
+                'cantidad'=>count($items)
+            ]);
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['ok'=>false]);
+        }
 
         exit;
     }
@@ -159,9 +176,17 @@ class CarritoController
         $idUsuario = $_SESSION['id'];
         $metodo = intval($input['metodo_pago'] ?? 0);
 
+        /* Una sola conexión compartida para todo el checkout: antes cada
+           Carrito::listar/vaciar/cerrar y cada tieneAlquilerActivo/
+           crearAlquiler DENTRO del ciclo (2 conexiones por película en el
+           carrito) abrían la suya propia — con varios artículos en el
+           carrito esto podía ser fácilmente 6, 8 o más conexiones seguidas
+           para un solo "Alquilar todo". */
+        $conn = null;
         try {
+            $conn = conectaOracle();
 
-            $items = Carrito::listar($idUsuario);
+            $items = Carrito::listar($idUsuario, $conn);
 
             if (empty($items)) {
                 echo json_encode(['ok'=>false,'msg'=>'Carrito vacío']);
@@ -170,7 +195,7 @@ class CarritoController
 
             foreach ($items as $p) {
 
-                if (Transaccion::tieneAlquilerActivo($idUsuario, $p['ID_PELICULA'])) {
+                if (Transaccion::tieneAlquilerActivo($idUsuario, $p['ID_PELICULA'], $conn)) {
                     continue;
                 }
 
@@ -178,12 +203,13 @@ class CarritoController
                     $idUsuario,
                     $p['ID_PELICULA'],
                     $p['PRECIO'],
-                    $metodo ?: null
+                    $metodo ?: null,
+                    $conn
                 );
             }
 
-            Carrito::vaciar($idUsuario);
-            Carrito::cerrar($idUsuario);
+            Carrito::vaciar($idUsuario, $conn);
+            Carrito::cerrar($idUsuario, $conn);
 
             echo json_encode(['ok'=>true]);
 
@@ -193,6 +219,8 @@ class CarritoController
                 'ok'=>false,
                 'msg'=>$e->getMessage()
             ]);
+        } finally {
+            if ($conn) oci_close($conn);
         }
 
         exit;

@@ -11,9 +11,9 @@ class Genero
     /* ===============================
        LISTAR
        =============================== */
-    public static function all()
+    public static function all($conexion = null)
     {
-        $c = self::conexion();
+        $c = $conexion ?? self::conexion();
 
         $sql = "BEGIN CONSULTAR_GENEROS(:cursor); END;";
         $stmt = oci_parse($c, $sql);
@@ -29,7 +29,7 @@ class Genero
         }
 
         oci_free_statement($stmt);
-        oci_close($c);
+        if (!$conexion) oci_close($c);
 
         return $generos;
     }

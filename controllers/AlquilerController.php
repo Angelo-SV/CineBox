@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../models/Transaccion.php';
 require_once __DIR__ . '/../models/Pelicula.php';
+require_once __DIR__ . '/../config/Database.php';
 
 class AlquilerController
 {
@@ -31,10 +32,16 @@ class AlquilerController
             return;
         }
 
+        /* Una sola conexión compartida: antes tieneAlquilerActivo(),
+           obtenerPorId() y crearAlquiler() abrían cada una la suya propia
+           (3 conexiones seguidas en una acción tan sensible a la latencia
+           como confirmar un alquiler). */
+        $conn = null;
         try {
+            $conn = conectaOracle();
 
             /* 🔍 Verificar si ya tiene alquiler activo */
-            if (Transaccion::tieneAlquilerActivo($idUsuario, $idPelicula)) {
+            if (Transaccion::tieneAlquilerActivo($idUsuario, $idPelicula, $conn)) {
                 echo json_encode([
                     "ok" => false,
                     "msg" => "Ya tienes esta película alquilada"
@@ -43,7 +50,7 @@ class AlquilerController
             }
 
             /* 🎬 Obtener precio actual */
-            $pelicula = Pelicula::obtenerPorId($idPelicula);
+            $pelicula = Pelicula::obtenerPorId($idPelicula, $conn);
 
             if (!$pelicula) {
                 echo json_encode(["ok" => false, "msg" => "Película no existe"]);
@@ -57,16 +64,17 @@ class AlquilerController
                 $idUsuario,
                 $idPelicula,
                 $precio,
-                $metodoPago ?: null
+                $metodoPago ?: null,
+                $conn
             );
-            
+
             if ($idTransaccion == -1) {
                 echo json_encode([
                     "ok" => false,
                     "msg" => "Ya existe alquiler activo"
                 ]);
                 return;
-            }            
+            }
 
             echo json_encode([
                 "ok" => true,
@@ -80,6 +88,8 @@ class AlquilerController
                 "ok" => false,
                 "msg" => $e->getMessage()
             ]);
+        } finally {
+            if ($conn) oci_close($conn);
         }
     }
 
@@ -109,28 +119,6 @@ class AlquilerController
             "ok" => true,
             "activo" => $activo
         ]);
-    }
-
-
-    /* ===============================
-       OBTENER ALQUILER ACTIVO
-       =============================== */
-    public static function activo()
-    {
-        if (empty($_SESSION['id'])) {
-            echo json_encode(null);
-            return;
-        }
-
-        $idUsuario  = $_SESSION['id'];
-        $idPelicula = intval($_GET['pelicula_id'] ?? 0);
-
-        $data = Transaccion::obtenerAlquilerActivo(
-            $idUsuario,
-            $idPelicula
-        );
-
-        echo json_encode($data);
     }
 
 

@@ -148,6 +148,54 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     /* ===============================
+       MODAL ALQUILERES ACTIVOS
+       =============================== */
+    document.querySelectorAll(".btnVerAlquileres").forEach(btn =>
+        btn.addEventListener("click", function () {
+            document.getElementById("alqUsuarioNombre").textContent = this.dataset.nombre;
+            const loader = document.getElementById("alqUsuarioLoader");
+            const vacio = document.getElementById("alqUsuarioVacio");
+            const tabla = document.getElementById("alqUsuarioTabla");
+            const tbody = tabla.querySelector("tbody");
+            tbody.innerHTML = "";
+            vacio.classList.add("d-none");
+            tabla.classList.add("d-none");
+            loader.classList.remove("d-none");
+
+            new bootstrap.Modal(document.getElementById("modalAlquileresUsuario")).show();
+
+            fetch(window.BASE_PATH + "/usuarios/alquileres?id=" + this.dataset.id)
+                .then(r => r.json())
+                .then(data => {
+                    loader.classList.add("d-none");
+                    if (!data.ok || !data.peliculas || data.peliculas.length === 0) {
+                        vacio.classList.remove("d-none");
+                        return;
+                    }
+                    data.peliculas.forEach(p => {
+                        const horas = parseInt(p.HORAS_RESTANTES, 10) || 0;
+                        const dias = Math.floor(horas / 24);
+                        const restoHoras = horas % 24;
+                        const fecha = new Date(p.FECHA_EXPIRACION).toLocaleDateString("es-CR");
+                        const fila = document.createElement("tr");
+                        fila.innerHTML = `
+                            <td>${p.TITULO}</td>
+                            <td>${fecha}</td>
+                            <td>${dias}d ${restoHoras}h</td>
+                        `;
+                        tbody.appendChild(fila);
+                    });
+                    tabla.classList.remove("d-none");
+                })
+                .catch(() => {
+                    loader.classList.add("d-none");
+                    vacio.textContent = "No se pudo cargar la información. Intenta de nuevo.";
+                    vacio.classList.remove("d-none");
+                });
+        })
+    );
+
+    /* ===============================
        DATATABLE
        =============================== */
     initDataTableSimple("#tablaUsuarios");

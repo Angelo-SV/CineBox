@@ -140,12 +140,6 @@ if ($uri === 'alquiler-validar') {
     exit;
 }
 
-if ($uri === 'alquiler-activo') {
-    require __DIR__ . '/../controllers/AlquilerController.php';
-    AlquilerController::activo();
-    exit;
-}
-
 /* ADMIN */
 if ($uri === 'admin') {
 require __DIR__ . '/../middleware/admin.php';
@@ -166,7 +160,8 @@ if ($uri === 'usuarios') {
 if (
     $uri === 'usuarios/crear' ||
     $uri === 'usuarios/actualizar' ||
-    $uri === 'usuarios/eliminar'
+    $uri === 'usuarios/eliminar' ||
+    $uri === 'usuarios/alquileres'
 ) {
     require __DIR__ . '/../controllers/UsuariosController.php';
     exit;

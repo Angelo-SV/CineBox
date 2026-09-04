@@ -49,3 +49,74 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+/* =========================================
+   DataTables: alinear con la paleta oscura +
+   amarillo del resto del sitio (por defecto
+   se renderizan en blanco/azul de Bootstrap
+   y no contrastan con el panel admin).
+   ========================================= */
+.dataTables_wrapper .dataTables_length select,
+.dataTables_wrapper .dataTables_filter input {
+  background-color: #212529;
+  color: #f8f9fa;
+  border: 1px solid #ffc107;
+  border-radius: 4px;
+  color-scheme: dark;
+}
+
+.dataTables_wrapper .dataTables_info {
+  color: #ced4da;
+}
+
+/* La integración DataTables+Bootstrap5 pinta la paginación con
+   <li class="page-item"><a class="page-link">, que trae el blanco/azul
+   por defecto de Bootstrap encima de cualquier estilo en .paginate_button. */
+.dataTables_wrapper .dataTables_paginate .page-link {
+  background-color: #212529 !important;
+  border: 1px solid #ffc107 !important;
+  color: #ffc107 !important;
+  margin-left: 4px;
+  border-radius: 4px;
+}
+
+.dataTables_wrapper .dataTables_paginate .page-link:hover {
+  background-color: #ffc107 !important;
+  color: #000 !important;
+  border-color: #ffc107 !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .page-item.active .page-link {
+  background-color: #ffc107 !important;
+  color: #000 !important;
+  border-color: #ffc107 !important;
+  font-weight: bold;
+}
+
+.dataTables_wrapper .dataTables_paginate .page-item.disabled .page-link {
+  background-color: #212529 !important;
+  color: #6c757d !important;
+  border-color: #495057 !important;
+}
+
+/* Bootstrap's .text-muted (#6c757d) apenas contrasta con los fondos
+   oscuros del panel admin. */
+.text-hint {
+  color: #adb5bd;
+}
+
+/* Botón "mostrar/ocultar contraseña" (js/password-toggle.js) */
+.btn-toggle-password {
+  position: absolute;
+  right: 10px;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #adb5bd;
+  padding: 0;
+  line-height: 1;
+  cursor: pointer;
+}
+.btn-toggle-password:hover {
+  color: #ffc107;
+}

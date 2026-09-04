@@ -6,6 +6,7 @@ require_once __DIR__ . '/../models/Estudio.php';
 require_once __DIR__ . '/../models/Genero.php';
 require_once __DIR__ . '/../models/Proveedor.php';
 require_once __DIR__ . '/../config/constants.php';
+require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../middleware/admin.php';
 
 class PeliculasController {
@@ -15,23 +16,30 @@ class PeliculasController {
        =============================== */
        public static function listarAdmin() {
         requireAdmin();
-    
+
+        /* Una sola conexión compartida para las 6 consultas de esta página
+           (antes cada una abría y cerraba la suya propia). */
+        $conn = null;
         try {
-            $peliculas   = Pelicula::listar();
-            $generos     = Genero::all();
-            $actores     = Actor::obtenerTodos();
-            $directores  = Director::obtenerTodos();
-            $estudios    = Estudio::all();
-            $proveedores = Proveedor::all();
-    
+            $conn = conectaOracle();
+
+            $peliculas   = Pelicula::listar($conn);
+            $generos     = Genero::all($conn);
+            $actores     = Actor::obtenerTodos($conn);
+            $directores  = Director::obtenerTodos($conn);
+            $estudios    = Estudio::all($conn);
+            $proveedores = Proveedor::all($conn);
+
             require __DIR__ . '/../views/admin/peliculas.php';
-    
+
         } catch (Exception $e) {
             error_log($e->getMessage());
             header("Location: " . BASE_PATH . "/peliculas?msg=error_bd");
             exit;
+        } finally {
+            if ($conn) oci_close($conn);
         }
-    }    
+    }
 
     private static function validarDatos(array $data, bool $esUpdate = false) {
         if ($esUpdate && empty($data['idp'])) {

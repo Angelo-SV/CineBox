@@ -77,13 +77,13 @@ ob_start();
       <!-- GENERO -->
       <div class="filtro-item">
         <select id="filtroGenero" onchange="aplicarFiltros()">
-          <option value="0">🎭 Género</option>
+          <option value="0">🎭 Todos los géneros</option>
         </select>
       </div>
       <!-- ESTUDIO -->
       <div class="filtro-item">
         <select id="filtroEstudio" onchange="aplicarFiltros()">
-          <option value="0">🏢 Estudio</option>
+          <option value="0">🏢 Todos los estudios</option>
         </select>
       </div>
       <!-- SWITCHES -->
@@ -103,6 +103,13 @@ ob_start();
         </label>
       </div>
       <?php endif; ?>
+      <!-- LIMPIAR (solo visible con algún filtro activo, pegado a la derecha) -->
+      <button type="button"
+              id="btnLimpiarFiltros"
+              class="btn btn-outline-warning btn-sm ms-auto d-none"
+              onclick="limpiarFiltros()">
+        <i class="bi bi-x-circle"></i> Limpiar filtros
+      </button>
     </div>
   </div>
 </div>
