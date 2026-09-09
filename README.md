@@ -1,22 +1,21 @@
 # CineBox
 
-**CineBox** is a full-stack movie rental web app built with a hand-rolled PHP MVC architecture and an Oracle Autonomous Database, deployed on a real cloud server.
-This project is part of my portfolio and was developed to practice **backend architecture, direct PL/SQL database design, and cloud deployment** — end to end, without a framework, without an ORM, and without a PaaS doing the infrastructure work for me.
+**CineBox** is a movie rental web app, built with a PHP MVC architecture and an Oracle Autonomous Database, deployed on a real cloud server.
 
 ---
 
 ## About the project
 
-CineBox simulates a movie rental service ("videoteca"): visitors browse a public catalog, registered users can build a cart, rent movies for a limited time, leave reviews, and keep a personal list of favorites, while administrators manage the full catalog (movies, actors, directors, studios, genres, providers) and users from a dedicated panel.
+CineBox simulates a movie rental service ("videoteca"): visitors browse a public catalog, registered users can build a cart, rent movies for a limited time, leave reviews, and keep a list of favorites, while administrators manage the full catalog (movies, actors, directors, studios, genres, providers) and users from a dedicated panel.
 
-It's deliberately built **without a framework**, so that every layer — routing, session handling, database access, business logic — is something I designed and wired together myself instead of configuring a starter template. Almost all business logic (rental expiration, cart consolidation, catalog filtering, admin reporting) lives directly in **PL/SQL** stored procedures and packages, with PHP acting mostly as a thin HTTP/session layer on top of it.
+Almost all business logic (rental expiration, cart consolidation, catalog filtering, admin reporting) lives directly in **PL/SQL** stored procedures and packages, with PHP acting mostly as an HTTP/session layer on top of it.
 
 ---
 
 ## Main features
 
 - **Public catalog** with live search, filtering by genre/studio, and pagination — no page reloads, backed by AJAX endpoints.
-- **Accounts**: registration, login, and session handling hardened against showing authenticated pages via the browser's back button after logout.
+- **Accounts**: registration, login, and session handling.
 - **Favorites list** and **shopping cart**, both persisted per user in the database.
 - **Rentals** with a real expiration window (countdown shown in "My Library"), automatically expired by a scheduled job.
 - **Reviews & ratings** per movie.
@@ -28,17 +27,17 @@ It's deliberately built **without a framework**, so that every layer — routing
 ## Tech stack
 
 **Backend**
-- PHP 8.1, no framework — a small hand-rolled MVC (`routes/` → `controllers/` → `models/` → `views/`)
-- OCI8 (PHP's native Oracle extension) for all database access
+- PHP 8.1, no framework — a small hand-rolled MVC (`routes/` → `controllers/` → `models/` → `views/`).
+- OCI8 (PHP's native Oracle extension) for all database access.
 
 **Database**
-- Oracle Autonomous Database (Always Free tier)
-- Business logic implemented directly in PL/SQL: stored procedures, packages, functions, triggers, and a `SYS_REFCURSOR`-based pattern for returning result sets to PHP
+- Oracle Autonomous Database (Always Free tier).
+- Business logic implemented directly in PL/SQL: stored procedures, packages, functions, triggers, and a `SYS_REFCURSOR`-based pattern for returning result sets to PHP.
 
 **Frontend**
-- Bootstrap 5, Bootstrap Icons
-- Vanilla JavaScript (`fetch`-based AJAX, no build step)
-- DataTables for the admin panel's listing tables
+- Bootstrap 5, Bootstrap Icons.
+- Vanilla JavaScript (`fetch`-based AJAX, no build step).
+- DataTables for the admin panel's listing tables.
 
 **Infrastructure & cloud**
 - Hosted on an **Oracle Cloud Infrastructure (OCI)** Always Free compute instance (Oracle Linux 9)
@@ -84,17 +83,17 @@ CineBox/
 ## Screenshots
 
 <p align="center">
-  <img src="screenshots/catalogo.png" alt="Public catalog" width="700"/>
+  <img src="screenshots/catalogo.jpg" alt="Public catalog" width="700"/>
 </p>
 <p align="center"><em>Public catalog with search and filters</em></p>
 
 <p align="center">
-  <img src="screenshots/detalle.png" alt="Movie detail" width="700"/>
+  <img src="screenshots/detalle.jpg" alt="Movie detail" width="700"/>
 </p>
 <p align="center"><em>Movie detail, cast, and reviews</em></p>
 
 <p align="center">
-  <img src="screenshots/admin.png" alt="Admin panel" width="700"/>
+  <img src="screenshots/admin.jpg" alt="Admin panel" width="700"/>
 </p>
 <p align="center"><em>Admin panel</em></p>
 
@@ -105,17 +104,6 @@ CineBox/
 CineBox is deployed and publicly reachable at:
 
 **[https://cinebox-app.duckdns.org](https://cinebox-app.duckdns.org)**
-
----
-
-## Running it locally
-
-This project connects to a private Oracle Autonomous Database instance and requires an Oracle Wallet, so it can't be run out of the box without a database of your own — but the setup is:
-
-1. Clone the repository and point Apache/PHP at its root (no build step, no Composer dependency).
-2. Copy `.env.example` to `.env` and fill in your own Oracle credentials and TNS alias.
-3. Point `TNS_ADMIN` at your Oracle Wallet directory.
-4. Import `database/cinebox_schema.sql` into your own Oracle database.
 
 ---
 
