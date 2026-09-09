@@ -83,17 +83,22 @@ CineBox/
 ## Capturas de pantalla
 
 <p align="center">
-  <img src="screenshots/catalogo.jpg" alt="Catálogo público" width="700"/>
+  <img src="img/catalogo.jpg" alt="Catálogo público" width="700"/>
 </p>
 <p align="center"><em>Catálogo público con búsqueda y filtros</em></p>
 
 <p align="center">
-  <img src="screenshots/detalle.jpg" alt="Detalle de película" width="700"/>
+  <img src="img/detalle.jpg" alt="Detalle de película" width="700"/>
 </p>
 <p align="center"><em>Detalle de película, reparto y reseñas</em></p>
 
 <p align="center">
-  <img src="screenshots/admin.jpg" alt="Panel de administración" width="700"/>
+  <img src="img/userProfile.jpg" alt="Perfil de usuario" width="700"/>
+</p>
+<p align="center"><em>Perfil de usuario — "Mi Biblioteca"</em></p>
+
+<p align="center">
+  <img src="img/admin.jpg" alt="Panel de administración" width="700"/>
 </p>
 <p align="center"><em>Panel de administración</em></p>
 

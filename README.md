@@ -83,17 +83,22 @@ CineBox/
 ## Screenshots
 
 <p align="center">
-  <img src="screenshots/catalogo.jpg" alt="Public catalog" width="700"/>
+  <img src="img/catalogo.jpg" alt="Public catalog" width="700"/>
 </p>
 <p align="center"><em>Public catalog with search and filters</em></p>
 
 <p align="center">
-  <img src="screenshots/detalle.jpg" alt="Movie detail" width="700"/>
+  <img src="img/detalle.jpg" alt="Movie detail" width="700"/>
 </p>
 <p align="center"><em>Movie detail, cast, and reviews</em></p>
 
 <p align="center">
-  <img src="screenshots/admin.jpg" alt="Admin panel" width="700"/>
+  <img src="img/userProfile.jpg" alt="User profile" width="700"/>
+</p>
+<p align="center"><em>User profile — "My Library"</em></p>
+
+<p align="center">
+  <img src="img/admin.jpg" alt="Admin panel" width="700"/>
 </p>
 <p align="center"><em>Admin panel</em></p>
 
