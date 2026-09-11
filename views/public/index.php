@@ -219,7 +219,7 @@ ob_start();
         </p>
       </div>
       <div class="modal-footer border-warning justify-content-center">
-        <a href="<?= BASE_PATH ?>/biblioteca"
+        <a href="<?= BASE_PATH ?>/perfil/biblioteca"
            class="btn btn-warning">
            Ir a mi biblioteca
         </a>
